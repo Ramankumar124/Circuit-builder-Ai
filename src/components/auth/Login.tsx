@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Api from "../../api";
 import { LoginFormInputs, loginSchema } from "@/lib/Schemas/authSchemas";
 import toast, { Toaster } from "react-hot-toast";
-import { FaPerson } from "react-icons/fa6";
 
 type AuthPage =
   | "login"
@@ -47,7 +46,7 @@ export function Login({ onPageChange }: LoginProps) {
       const response = await Api.post("/auth/login", data);
       dispatch(setUserData(response.data.data));
       toast.success("Login Succesfull");
-      navigate("/");
+      navigate("/home");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || error?.message);
     }
@@ -73,7 +72,7 @@ export function Login({ onPageChange }: LoginProps) {
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input
                 type="text"
-                {...register("crenditial")}
+                {...register("credential")}
                 className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white"
                 placeholder="Enter Username or email"
                 required
@@ -99,19 +98,19 @@ export function Login({ onPageChange }: LoginProps) {
                 className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white"
                 placeholder="Create a password"
               />
-            </div>
 
             {isPassword ? (
               <Eye
-                onClick={passwordToggle}
-                className="absolute h-7  w-7 right-3 top-1/2 -translate-y-1/2 text-gray-400 "
+              onClick={passwordToggle}
+              className="absolute h-7  w-7 right-3 top-1/2 -translate-y-1/2 text-gray-400 "
               />
             ) : (
               <EyeOff
-                onClick={passwordToggle}
-                className="absolute h-7  w-7 right-3 top-1/2 -translate-y-1/2 text-gray-400 "
+              onClick={passwordToggle}
+              className="absolute h-7  w-7 right-3 top-1/2 -translate-y-1/2 text-gray-400 "
               />
             )}
+            </div>
             {errors.password && (
               <p className="text-red-500 error-message">
                 {errors.password.message}
@@ -132,10 +131,11 @@ export function Login({ onPageChange }: LoginProps) {
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
         >
-          Sign In
-          <ArrowRight className="h-4 w-4" />
+         {isSubmitting?"Submitting...":"Sign In"}
+       {!isSubmitting &&   <ArrowRight className="h-4 w-4" />}
         </button>
 
         <p className="text-center text-gray-400">

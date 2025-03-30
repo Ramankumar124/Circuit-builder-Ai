@@ -65,6 +65,7 @@ export function ResetPassword({ onPageChange }: ResetPasswordProps) {
           <label className="block text-sm font-medium text-gray-200">
             New Password
           </label>
+          <div>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
             <input
@@ -74,6 +75,7 @@ export function ResetPassword({ onPageChange }: ResetPasswordProps) {
               placeholder="Enter new password"
               required
             />
+            </div>
             {errors.password && (
               <p className="error-message">{errors.password.message}</p>
             )}
@@ -84,6 +86,7 @@ export function ResetPassword({ onPageChange }: ResetPasswordProps) {
           <label className="block text-sm font-medium text-gray-200">
             Confirm Password
           </label>
+          <div>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
             <input
@@ -93,6 +96,7 @@ export function ResetPassword({ onPageChange }: ResetPasswordProps) {
               placeholder="Confirm new password"
               required
             />
+            </div>
             {errors.confirmPassword && (
               <p className="error-message">{errors.confirmPassword.message}</p>
             )}

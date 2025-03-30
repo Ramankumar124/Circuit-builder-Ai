@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
+import { FaWandMagicSparkles } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import { FaMicrophone } from "react-icons/fa";
 import { setCircuit } from "../../redux/features/circuitSlice";
-// import { createCiruit } from "../../apiService/api";
-import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { Spinner } from "../../Spinner";
-// import { enhancePrompt } from "../../apiService/api";
-import { FaWandMagicSparkles } from "react-icons/fa6";
-import Loader from "../../components/ui/Loader"
 import { useDispatch } from "react-redux";
+import { speachSearch } from "@/utils/speachSearch";
+// import {
+//   useCreateCircuitMutation,
+//   useEhancePromptMutation,
+// } from "@/redux/api/circuitApi";
+import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
+import { useCreateCircuitMutation, useEhancePromptMutation } from "@/redux/api/circuitApi";
+import Api from "@/api";
 declare global {
   interface Window {
     SpeechRecognition: any;
@@ -26,42 +29,44 @@ interface CircuitResponse {
     suggestions: string[];
   };
 }
+const loadingStates = [
+  {
+    text: "Buying a condo",
+  },
+  {
+    text: "Travelling in a flight",
+  },
+  {
+    text: "Meeting Tyler Durden",
+  },
+  {
+    text: "He makes soap",
+  },
+  {
+    text: "We goto a bar",
+  },
+  {
+    text: "Start a fight",
+  },
+  {
+    text: "We like it",
+  },
+  {
+    text: "Welcome to F**** C***",
+  },
+];
 
 export default function PromptPage() {
   const [isListening, setIsListening] = useState(false);
-  const [ehnahceLoader, setEhnahceLoader] = useState(false)
-  const [recognition, setRecognition] = useState<SpeechRecognition | null>(
-    null
-  );
+  const [ehnahceLoader, setEhnahceLoader] = useState(false);
+  const [recognition, setRecognition] = useState<any | null>(null);
+  const [prompt, setPrompt] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [createCircuit, { isLoading, isError }] = useCreateCircuitMutation();
 
   useEffect(() => {
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (SpeechRecognition) {
-      const rec = new SpeechRecognition();
-      rec.continuous = true;
-      rec.interimResults = true;
-      rec.lang = "en-US";
-
-      rec.onresult = (event: SpeechRecognitionEvent) => {
-        let transcript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
-        }
-        console.log(transcript);
-
-        setPrompt(transcript);
-      };
-
-      rec.onend = () => {
-        setIsListening(false);
-      };
-
-      setRecognition(rec);
-    } else {
-      console.error("Speech Recognition API is not supported in this browser.");
-    }
+    speachSearch(setIsListening, setPrompt, setRecognition);
   }, []);
 
   const toggleListening = () => {
@@ -73,11 +78,6 @@ export default function PromptPage() {
     }
     setIsListening(!isListening);
   };
-
-  const [prompt, setPrompt] = useState("");
-  const [isloading, setisloading] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const addToPrompt = (event: any) => {
     setPrompt(event.currentTarget.textContent);
@@ -93,82 +93,73 @@ export default function PromptPage() {
       return;
     }
 
-
-    // try {
-    //   setisloading(true);
-    //   const payload = { prompt };
-
-    //   const response = (await 
-    //     createCiruit(payload)) as {
-    //     data: CircuitResponse;
-    //   };
-
-    //   let rawData = response?.data?.data;
-
-    //   // Ensure rawData is a string before calling replace()
-    //   if (typeof rawData !== "string") {
-    //     console.error("API returned unexpected format:", rawData);
-    //     toast.error("Invalid API response format");
-    //     return;
-    //   }
-
-    //   // **Fix Regex to Remove Markdown Artifacts**
-    //   const cleanedResponse = rawData.replace(/```json|```/g, "").trim();
-
-    //   // **Parse the cleaned JSON string**
-    //   const parsedData = JSON.parse(cleanedResponse);
-
-    //   if (parsedData) {
-    //     dispatch(
-    //       setCircuit({
-    //         prompt: prompt,
-    //         node: parsedData?.nodes || null,
-    //         edge: parsedData?.edges || null,
-    //         explanation: parsedData.explanation || null,
-    //         suggestions: parsedData.suggestions || null,
-    //         circuitName: parsedData.circuit_name || "", // Extract circuit name
-    //       })
-    //     );
-    //     navigate("/dashboard");
-    //   } else {
-    //     toast.error("Failed to parse circuit data");
-    //   }
-    // } catch (error) {
-    //   if (error instanceof AxiosError) {
-    //     toast.error(error.response?.data?.message || "API error occurred");
-    //   } else {
-    //     toast.error("An unexpected error occurred");
-    //   }
-    // } finally {
-    //   setisloading(false);
-    // }
+    if (isError) toast.error("Unable to genrate circuit ");
+    const response = await createCircuit(prompt);
+    let rawData = response?.data;
+    if (typeof rawData !== "string") {
+      console.error("API returned unexpected format:", rawData);
+      toast.error("Invalid API response format");
+      return;
+    }
+    // **Fix Regex to Remove Markdown Artifacts**
+    const cleanedResponse = rawData.replace(/```json|```/g, "").trim();
+    // **Parse the cleaned JSON string**
+    const parsedData = JSON.parse(cleanedResponse);
+    if (parsedData) {
+      dispatch(
+        setCircuit({
+          prompt: prompt,
+          node: parsedData?.nodes || null,
+          edge: parsedData?.edges || null,
+          explanation: parsedData.explanation || null,
+          suggestions: parsedData.suggestions || null,
+          circuitName: parsedData.circuit_name || "", // Extract circuit name
+        })
+      );
+      navigate("/dashboard");
+    } else {
+      toast.error("Failed to parse circuit data");
+    }
   };
 
-  // const handleEnhancePrompt = async () => {
-  //    setEhnahceLoader(true);
-  //    setPrompt("Your Prompt Is Enhancing.... ")
-  // try {
-  //     const payload = {
-  //       prompt,
-  //     };
-  //     const response = await enhancePrompt(payload) as {data: {data: string}};
-  //     setPrompt(response?.data?.data);
-  //   } catch (error) {
-  //     toast.error(`${error}`, { duration: 5000 });
-  //   } finally {
-  //     setEhnahceLoader(false)
-  //   }
-  // };
+  const [enhancePrompt, { isError:EnhancIsError, isSuccess, isLoading:EnhanceIsLoading, error }]=useEhancePromptMutation();
+  const handleEnhancePrompt = async () => {
+  
+    console.log("ehance clicket");
+    
+    setEhnahceLoader(true);
+    if (EnhanceIsLoading) setPrompt("Your Prompt Is Enhancing.... ");
+ const response=await Api.post("/circuit/enhance-prompt",{prompt});
+    // const response = await enhancePrompt(prompt);
+    // if (isSuccess) {
+      setPrompt(response?.data.data);
+      setEhnahceLoader(false);
+    // }
+    //@ts-ignore
+    if (EnhancIsError)    toast.error( error?.response?.data?.message || error?.message ||
+          "Unable to ehance prompt"
+      );
+  };
 
   return (
     <div>
-      {isloading && <Spinner />}
+      {isLoading && (
+
+    <div className= "relative w-full h-[60vh] flex items-center justify-center ">
+        <Loader
+          loadingStates={loadingStates}
+          loading={true}
+          duration={2000}
+        />
+        </div>
+      )}
       <nav id="header" className="fixed w-full z-50 bg-[#191919]">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center ">
           <div className="flex items-center text-bold text-xl text-[#899598] -ml-10">
-            <a href="/myprojects" className="text-bold text-white"><span className="text-blue-700">My</span> Projects  </a>
+            <a href="/myprojects" className="text-bold text-white">
+              <span className="text-blue-700">My</span> Projects{" "}
+            </a>
             {/* <RxHamburgerMenu /> */}
-
           </div>
         </div>
       </nav>
@@ -226,18 +217,18 @@ export default function PromptPage() {
 
           <div className="flex justify-between mt-4">
             <button
-              className="h-10 w-auto px-2 text-3xl text-white rounded-md cursor-pointer relative group" 
-              // onClick={() => handleEnhancePrompt()}
+              className="h-10 w-auto px-2 text-3xl text-white rounded-md cursor-pointer relative group"
+              onClick={handleEnhancePrompt}
             >
-            {ehnahceLoader?<Loader /> : <FaWandMagicSparkles  />}
+              <FaWandMagicSparkles />
               <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
-              Enhance Prompt
+                Enhance Prompt
               </span>
             </button>
             <button
               className="h-10 w-24 bg-white text-black rounded-md cursor-pointer"
               onClick={() => handleApi()}
-              disabled={isloading}
+              disabled={isLoading}
             >
               Generate
             </button>

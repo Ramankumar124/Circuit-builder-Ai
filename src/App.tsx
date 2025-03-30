@@ -1,5 +1,9 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes, BrowserRouter } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  BrowserRouter,
+} from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/Dashboard/Dashbaord";
 import PromptPage from "./pages/Main/PromptPage";
@@ -13,24 +17,26 @@ import { fetchUserData } from "./redux/features/authSlice";
 import { useEffect } from "react";
 import NotFound from "./pages/NotFound";
 import AuthLayout from "./pages/auth";
+
+
 function App() {
-  const { user} = useSelector((state: RootState) => state?.auth);
+
+  const {user} = useSelector((state: RootState) => state?.auth);
 
   const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
     dispatch(fetchUserData());
+    console.log("data aya");
   }, [dispatch]);
 
   return (
     <>
-    <BrowserRouter>
-         <Routes>
-
+      <BrowserRouter>
+        <Routes>
           <Route path="/" element={<LandingPage />} />
 
-          <Route
-           element={<ProtectedRoute user={user} />}
-           >
+          <Route element={<ProtectedRoute user={user} />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="home" element={<PromptPage />} />
             <Route path="myprojects" element={<SavedProject />} />
@@ -43,10 +49,9 @@ function App() {
               </ProtectedRoute>
             }
           />
-            <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-        </BrowserRouter>
-   
+      </BrowserRouter>
     </>
   );
 }

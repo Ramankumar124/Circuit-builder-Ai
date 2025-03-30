@@ -1,9 +1,7 @@
-import { createContext, useContext, useState, ReactNode, useRef } from "react";
+import { createContext, useContext, ReactNode, useRef } from "react";
 
 // Define the shape of the context data
 interface circuitContextType {
-  circuitData: object;
-  setCircuitData: (theme: object) => void;
   flowRef:object 
 }
 
@@ -12,11 +10,10 @@ const circuitContext = createContext<circuitContextType | null>(null);
 
 // Create a provider component
 export const CircuitProvider = ({ children }: { children: ReactNode }) => {
-  const [circuitData, setCircuitData] = useState({});
   const flowRef = useRef(null);
 
   return (
-    <circuitContext.Provider value={{ circuitData, setCircuitData,flowRef }}>
+    <circuitContext.Provider value={{flowRef} }>
       {children}
     </circuitContext.Provider>
   );

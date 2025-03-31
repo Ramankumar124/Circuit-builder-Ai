@@ -1,5 +1,4 @@
 
-import { AxiosResponse } from "axios";
 import { userApi } from "./apiSlice";
 
 export const CircuitApi=userApi.injectEndpoints({
@@ -8,17 +7,18 @@ export const CircuitApi=userApi.injectEndpoints({
               query:(prompt:string)=>({
                 url:"/circuit/create-circuit",
                 method:"Post",
-                data:prompt
+                data:{prompt}
               }),
-              transformResponse:(response:AxiosResponse)=>response.data
+         
             }),
           ehancePrompt:builder.mutation({
             query:(prompt:string)=>({
                 url:"/circuit/enhance-prompt",
                 method:"Post",
-                data:prompt
+                data:{prompt}
+              
               }),
-              transformResponse:(response:AxiosResponse)=>response.data
+      
           })  
     })
 

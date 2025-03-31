@@ -10,7 +10,7 @@ const circuitContext = createContext<circuitContextType | null>(null);
 
 // Create a provider component
 export const CircuitProvider = ({ children }: { children: ReactNode }) => {
-  const flowRef = useRef(null);
+  const flowRef =  useRef<HTMLDivElement | null>(null);
 
   return (
     <circuitContext.Provider value={{flowRef} }>

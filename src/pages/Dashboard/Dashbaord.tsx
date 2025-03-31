@@ -11,16 +11,42 @@ import {
 } from "@mui/material";
 import FlowChart from "../../flowchart";
 import { useCircuitContext } from "../../context/circuitContext";
-import { toJpeg, toPng, toSvg } from "html-to-image";
-import jsPDF from "jspdf";
 import ProjectDialog from "../../components/ui/DialogBox";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/Store";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import useDownloadImage from "@/hooks/userDownloadImage";
+import { ReactFlowInstance } from "@xyflow/react";
 
-const getDropdownData = (nodes: object) => {
-  const dropdownData = {};
+type NodeType = {
+  type: string;
+  data: {
+    label: string;
+  };
+};
 
-  nodes.forEach((node) => {
+interface SelectedValues {
+  [key: string]: string;
+}
+
+interface HandleChangeEvent {
+  target: {
+    value: string;
+  };
+}
+
+// Add CircuitData interface to properly type the circuit data
+interface CircuitData {
+  node?: NodeType[] | null;
+  prompt?: string;
+  explanation?: string;
+  circuitName?: string;
+}
+
+const getDropdownData = (nodes: NodeType[]) => {
+  const dropdownData: Record<string, Set<string>> = {};
+
+  nodes?.forEach((node) => {
     const { type, data } = node;
     if (!dropdownData[type]) {
       dropdownData[type] = new Set();
@@ -32,18 +58,27 @@ const getDropdownData = (nodes: object) => {
 };
 
 const ComponentDropdowns = () => {
-  const [selectedValues, setSelectedValues] = useState({});
-  const [dropdownData, setDropdownData] = useState({});
-  const { circuitData } = useCircuitContext();
+  const [selectedValues, setSelectedValues] = useState<SelectedValues>({});
+  const [dropdownData, setDropdownData] = useState<Record<string, Set<string>>>(
+    {}
+  );
+  const circuitData = useSelector(
+    (state: RootState) => state?.circuit as CircuitData
+  );
 
   useEffect(() => {
-    if (circuitData?.nodes) {
-      setDropdownData(getDropdownData(circuitData.nodes));
+    if (circuitData?.node) {
+      setDropdownData(
+        getDropdownData(Array.isArray(circuitData.node) ? circuitData.node : [])
+      );
     }
   }, [circuitData]);
 
-  const handleChange = (type) => (event) => {
-    setSelectedValues({ ...selectedValues, [type]: event.target.value });
+  const handleChange = (type: string) => (event: HandleChangeEvent) => {
+    setSelectedValues((prevSelectedValues: SelectedValues) => ({
+      ...prevSelectedValues,
+      [type]: event.target.value,
+    }));
   };
 
   return (
@@ -76,69 +111,20 @@ const ComponentDropdowns = () => {
 
 const Dashboard = () => {
   const { flowRef } = useCircuitContext();
-  const reactFlowInstance = useRef(null);
+  const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
   const [isDialogOpen, setisDialogOpen] = useState<boolean>(false);
 
-  const prompt = useSelector((state:RootState) => state?.circuit?.prompt); // Get the prompt from Redux store
-  const circuitdata = useSelector((state:RootState) => state?.circuit);
-  const [exportMethod, setExportMethod] = useState("");
-  const downloadImage = useCallback(async (format) => {
-    if (!flowRef.current) return;
+  const prompt = useSelector((state: RootState) => state?.circuit?.prompt);
+  const circuitdata = useSelector(
+    (state: RootState) => state?.circuit as CircuitData
+  );
+  const [exportMethod, setExportMethod] = useState<string>("");
 
-    reactFlowInstance.current?.fitView();
-
-    const options = {
-      quality: 0.7,
-      pixelRatio: 1,
-      backgroundColor: "#ffffff",
-      filter: (node) => !node?.classList?.contains("react-flow__controls"),
-    };
-
-    try {
-      let dataUrl;
-
-      // For PDF, capture as PNG first
-      if (format === "pdf") {
-        dataUrl = await toPng(flowRef.current, options);
-      } else {
-        switch (format) {
-          case "png":
-            dataUrl = await toPng(flowRef.current, options);
-            break;
-          case "jpeg":
-            dataUrl = await toJpeg(flowRef.current, options);
-            break;
-          case "svg":
-            dataUrl = await toSvg(flowRef.current, options);
-            break;
-          default:
-            return;
-        }
-      }
-
-      if (format === "pdf") {
-        const pdf = new jsPDF({
-          orientation: "landscape",
-          unit: "mm",
-          format: "a4",
-        });
-
-        const imgProps = pdf.getImageProperties(dataUrl);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-        pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
-        pdf.save("diagram.pdf");
-      } else {
-        const link = document.createElement("a");
-        link.download = `diagram.${format}`;
-        link.href = dataUrl;
-        link.click();
-      }
-    } catch (error) {
-      console.error("Error exporting:", error);
-    }
-  }, []);
+  const downloadImage = useDownloadImage(
+    flowRef,
+    setExportMethod,
+    reactFlowInstance
+  );
 
   const handleDialog = () => {
     setisDialogOpen(false);
@@ -146,13 +132,16 @@ const Dashboard = () => {
 
   return (
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
-      <nav className="text-white bg-[#282626] p-2">
-        <div className="flex justify-between items-center p-4 bg-[#282626] ">
+      <nav className="text-white bg-[#282626] ">
+        <div className="flex justify-between items-center px-4 py-2 bg-[#282626] ">
           <div className="flex items-center">
             <a href="/home" className="text-white font-bold text-2xl">
               <span className="text-[#6E56CF]">Circuit</span>Builder
               <span className="text-[#6E56CF]">AI</span>
             </a>
+          </div>
+          <div className="mr-10">
+            <TextGenerateEffect words={circuitdata?.circuitName || ""} />
           </div>
           <div className="flex items-center gap-3">
             <button className="rounded-2xl bg-white text-black py-2 px-4">
@@ -248,7 +237,7 @@ const Dashboard = () => {
                 style={{ fontSize: "15px" }}
                 className="text-white text-sm "
               >
-                {circuitdata.explanation || "No prompt available"}
+                {circuitdata?.explanation || "No explanation available"}
               </Typography>
             </CardContent>
           </Card>

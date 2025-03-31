@@ -17,11 +17,12 @@ import { fetchUserData } from "./redux/features/authSlice";
 import { useEffect } from "react";
 import NotFound from "./pages/NotFound";
 import AuthLayout from "./pages/auth";
+import { Spinner } from "./Spinner";
 
 
 function App() {
 
-  const {user} = useSelector((state: RootState) => state?.auth);
+  const {user,loader} = useSelector((state: RootState) => state?.auth);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -29,7 +30,7 @@ function App() {
     dispatch(fetchUserData());
     console.log("data aya");
   }, [dispatch]);
-
+  if (loader) return <div><Spinner/></div>; 
   return (
     <>
       <BrowserRouter>

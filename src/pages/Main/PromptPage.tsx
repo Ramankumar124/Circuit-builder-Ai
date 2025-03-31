@@ -1,69 +1,36 @@
 import { useState, useEffect } from "react";
 import { FaWandMagicSparkles } from "react-icons/fa6";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { FaMicrophone } from "react-icons/fa";
 import { setCircuit } from "../../redux/features/circuitSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { speachSearch } from "@/utils/speachSearch";
-// import {
-//   useCreateCircuitMutation,
-//   useEhancePromptMutation,
-// } from "@/redux/api/circuitApi";
+import {
+  useCreateCircuitMutation,
+  useEhancePromptMutation,
+} from "@/redux/api/circuitApi";
 import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
-import { useCreateCircuitMutation, useEhancePromptMutation } from "@/redux/api/circuitApi";
-import Api from "@/api";
+import { loadingStates } from "@/constants/config";
+
 declare global {
   interface Window {
     SpeechRecognition: any;
     webkitSpeechRecognition: any;
   }
 }
-interface CircuitResponse {
-  message: string;
-  data: {
-    circuit_name: string;
-    nodes: any[];
-    edges: any[];
-    explanation: string;
-    suggestions: string[];
-  };
-}
-const loadingStates = [
-  {
-    text: "Buying a condo",
-  },
-  {
-    text: "Travelling in a flight",
-  },
-  {
-    text: "Meeting Tyler Durden",
-  },
-  {
-    text: "He makes soap",
-  },
-  {
-    text: "We goto a bar",
-  },
-  {
-    text: "Start a fight",
-  },
-  {
-    text: "We like it",
-  },
-  {
-    text: "Welcome to F**** C***",
-  },
-];
+
+
+
 
 export default function PromptPage() {
   const [isListening, setIsListening] = useState(false);
-  const [ehnahceLoader, setEhnahceLoader] = useState(false);
   const [recognition, setRecognition] = useState<any | null>(null);
   const [prompt, setPrompt] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [createCircuit, { isLoading, isError }] = useCreateCircuitMutation();
+  const [enhancePrompt] = useEhancePromptMutation();
 
   useEffect(() => {
     speachSearch(setIsListening, setPrompt, setRecognition);
@@ -92,65 +59,65 @@ export default function PromptPage() {
       toast.error("Prompt cannot be empty!");
       return;
     }
-
-    if (isError) toast.error("Unable to genrate circuit ");
-    const response = await createCircuit(prompt);
-    let rawData = response?.data;
-    if (typeof rawData !== "string") {
-      console.error("API returned unexpected format:", rawData);
-      toast.error("Invalid API response format");
-      return;
-    }
-    // **Fix Regex to Remove Markdown Artifacts**
-    const cleanedResponse = rawData.replace(/```json|```/g, "").trim();
-    // **Parse the cleaned JSON string**
-    const parsedData = JSON.parse(cleanedResponse);
-    if (parsedData) {
-      dispatch(
-        setCircuit({
-          prompt: prompt,
-          node: parsedData?.nodes || null,
-          edge: parsedData?.edges || null,
-          explanation: parsedData.explanation || null,
-          suggestions: parsedData.suggestions || null,
-          circuitName: parsedData.circuit_name || "", // Extract circuit name
-        })
+    try {
+      const response = await createCircuit(prompt).unwrap();
+      let rawData = response?.data;
+      if (typeof rawData !== "string") {
+        console.error("API returned unexpected format:", rawData);
+        toast.error("Invalid API response format");
+        return;
+      }
+      // **Fix Regex to Remove Markdown Artifacts**
+      const cleanedResponse = rawData.replace(/```json|```/g, "").trim();
+      // **Parse the cleaned JSON string**
+      const parsedData = JSON.parse(cleanedResponse);
+      if (parsedData) {
+        dispatch(
+          setCircuit({
+            prompt: prompt,
+            node: parsedData?.nodes || null,
+            edge: parsedData?.edges || null,
+            explanation: parsedData.explanation || null,
+            suggestions: parsedData.suggestions || null,
+            circuitName: parsedData.circuit_name || "", // Extract circuit name
+          })
+        );
+        navigate("/dashboard");
+      } else {
+        toast.error("Failed to parse circuit data");
+      }
+    } catch (error: any) {
+      toast.error(
+        error?.data?.message || error?.message || "Unable to genrate circuit t"
       );
-      navigate("/dashboard");
-    } else {
-      toast.error("Failed to parse circuit data");
     }
   };
 
-  const [enhancePrompt, { isError:EnhancIsError, isSuccess, isLoading:EnhanceIsLoading, error }]=useEhancePromptMutation();
   const handleEnhancePrompt = async () => {
-  
-    console.log("ehance clicket");
-    
-    setEhnahceLoader(true);
-    if (EnhanceIsLoading) setPrompt("Your Prompt Is Enhancing.... ");
- const response=await Api.post("/circuit/enhance-prompt",{prompt});
-    // const response = await enhancePrompt(prompt);
-    // if (isSuccess) {
-      setPrompt(response?.data.data);
-      setEhnahceLoader(false);
-    // }
-    //@ts-ignore
-    if (EnhancIsError)    toast.error( error?.response?.data?.message || error?.message ||
-          "Unable to ehance prompt"
+    setPrompt("Your Prompt Is Enhancing.... ");
+    try {
+      const response = await enhancePrompt(prompt).unwrap();
+      if (response) {
+        setPrompt(response.data);
+      }
+    } catch (error: any) {
+      setPrompt("");
+      toast.error(
+        error?.data?.message || error?.message || "Unable to ehance prompt"
       );
+    }
   };
 
   return (
     <div>
+      <Toaster />
       {isLoading && (
-
-    <div className= "relative w-full h-[60vh] flex items-center justify-center ">
-        <Loader
-          loadingStates={loadingStates}
-          loading={true}
-          duration={2000}
-        />
+        <div className="relative w-full h-[60vh] flex items-center justify-center ">
+          <Loader
+            loadingStates={loadingStates}
+            loading={true}
+            duration={2000}
+          />
         </div>
       )}
       <nav id="header" className="fixed w-full z-50 bg-[#191919]">

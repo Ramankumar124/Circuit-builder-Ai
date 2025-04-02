@@ -5,7 +5,7 @@ import App from './App.tsx'
 import { Provider } from 'react-redux'
 import { store } from './redux/Store.ts'
 import { ErrorBoundary } from 'react-error-boundary'
-import FallbackUI from './components/ui/fallbackUI.tsx'
+import FallbackUI from './components/custom/fallbackUI.tsx'
 import { CircuitProvider } from './context/circuitContext.tsx'
 
 

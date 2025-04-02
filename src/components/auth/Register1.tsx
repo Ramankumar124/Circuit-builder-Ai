@@ -1,5 +1,5 @@
 import  {  useState } from "react";
-import { Mail, Lock, User, ArrowRight, Image as ImageIcon, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { register1FormSchema} from "@/lib/Schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,7 +12,7 @@ interface RegisterProps {
   setlocaldata:any
 }
 type Register1Inputs = z.infer<typeof register1FormSchema>;
-export function Register1({ onPageChange,localdata,setlocaldata }: RegisterProps) {
+export function Register1({ onPageChange,setlocaldata }: RegisterProps) {
   const [isPassword, setIsPassword] = useState(true);
 
   const {

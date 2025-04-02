@@ -2,7 +2,7 @@ import Api from "@/api";
 import { register2FormSchema } from "@/lib/Schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, Camera, User } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";

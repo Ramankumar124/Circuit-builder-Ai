@@ -22,7 +22,7 @@ interface OTPVerificationProps {
 
 const VerifyForgotPassword=({ email, onPageChange }: OTPVerificationProps) =>{
 
-  const {register,handleSubmit,formState:{errors,isSubmitting},setValue}=useForm<OtpInput>({
+  const {register,handleSubmit,formState:{isSubmitting},setValue}=useForm<OtpInput>({
     resolver:zodResolver(otpSchema)
   })
 

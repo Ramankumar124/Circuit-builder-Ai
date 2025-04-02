@@ -18,8 +18,10 @@ Api.interceptors.response.use(
 
             try {
                 // Attempt to refresh the token
-                await axios.post("/refresh-token", {}, { withCredentials: true });
+                await axios.post("/auth/refresh-token", {}, { withCredentials: true });
                 // Retry the original request
+                console.log("refreshing token");
+                
                 return Api(originalRequest);
               } catch (refreshError) {
                 // Redirect to login if refresh fails

@@ -78,9 +78,9 @@ export function Login({ onPageChange }: LoginProps) {
                 required
               />
             </div>
-            {errors.crenditial && (
+            {errors.credential && (
               <p className=" text-red-500 error-message">
-                {errors.crenditial.message}
+                {errors.credential.message}
               </p>
             )}
           </div>

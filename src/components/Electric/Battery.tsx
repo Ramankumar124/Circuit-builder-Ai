@@ -1,8 +1,15 @@
-import { Handle, Position } from '@xyflow/react';
+import { Handle, HandleType, Position } from '@xyflow/react';
 
 import React from 'react';
 
-const Batery: React.FC= ({data} ) => {
+interface BatteryProps {
+  data: {
+    firsttype: string;
+    secondtype: string;
+  };
+}
+
+const Batery: React.FC<BatteryProps> = ({ data }) => {
 return(
 
   <div style={{ position: "relative", width: 80, height: 80 }}>
@@ -31,7 +38,7 @@ return(
 
       {/* Positive Terminal Handle */}
       <Handle
-        type={data.firsttype}
+        type={data.firsttype as HandleType}
         position={Position.Top}
         id="positive"
         style={{ left: "108%", top: "49px", background: "red",width:"3px", height:"3px" }}
@@ -39,7 +46,7 @@ return(
 
       {/* Negative Terminal Handle */}
       <Handle
-        type={data.secondtype}
+        type={data.secondtype as HandleType}
         position={Position.Top}
         id="negative"
         style={{ left: "143%", top: "49px", background: "black" , width:"3px", height:"3px"}}

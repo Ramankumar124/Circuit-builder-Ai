@@ -23,7 +23,7 @@ const OtpVerifyEmail = ({ email, onPageChange }: OTPVerificationProps) => {
 
   const {
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: {isSubmitting },
     setValue,
   } = useForm<OtpInput>({
     resolver: zodResolver(otpSchema),
@@ -38,8 +38,7 @@ const OtpVerifyEmail = ({ email, onPageChange }: OTPVerificationProps) => {
 
   const resendOtpHandler = async () => {
     try {
-      const response = await Api.post("/auth/resendEmail",email);
-
+        await Api.post("/auth/resendEmail",email);
       toast("Email Resend Successfully");
     } catch (error: any) {
       toast.error(error?.response?.data?.messag)
@@ -80,10 +79,11 @@ const OtpVerifyEmail = ({ email, onPageChange }: OTPVerificationProps) => {
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
         >
-          Verify OTP
-          <ArrowRight className="h-4 w-4" />
+         {isSubmitting?"Submitting...":" Verify OTP;"
+}          <ArrowRight className="h-4 w-4" />
         </button>
 
         <div className="text-center">

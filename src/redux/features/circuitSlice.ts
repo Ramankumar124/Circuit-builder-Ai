@@ -1,12 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define interfaces for circuit data
-interface Node {
-  id: string;
-  type: string;
-  data: Record<string, any>;
-  position: { x: number; y: number };
-}
 
 interface Edge {
   id: string;

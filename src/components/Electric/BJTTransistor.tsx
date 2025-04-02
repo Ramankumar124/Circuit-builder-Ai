@@ -1,5 +1,5 @@
 import React from "react";
-import { Handle, Position, NodeProps } from "@xyflow/react";
+import { Handle, Position, NodeProps, HandleType } from "@xyflow/react";
 
 interface TransistorNodeProps {
   first:{
@@ -44,7 +44,7 @@ const TransistorNode: React.FC<NodeProps<TransistorNodeProps>> = ({ data }) => {
 
       {/* Handles for Collector, Base, and Emitter */}  
       <Handle
-        type={data.first.type}
+        type={data.first.type as HandleType}
         position={Position.Left}
         id={data.first.pintype}
         style={{ left: "40%",top: "90%" }}

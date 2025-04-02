@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Mail, ArrowRight } from 'lucide-react';
 import Api from '../../api';
 import toast, { Toaster } from 'react-hot-toast';
-import {z} from "zod"
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { ForgotPasswordInputs, ForgotPasswordSchema } from '@/lib/Schemas/authSchemas';
@@ -13,11 +13,11 @@ interface ForgotPasswordProps {
 }
 
 export function ForgotPassword({ onPageChange }: ForgotPasswordProps) {
-  const [email, setEmail] = useState();
+  const [email,] = useState();
     const {
       register,
       handleSubmit,
-      formState: { errors, isSubmitting },
+      formState: {isSubmitting },
     } = useForm<ForgotPasswordInputs>({
       resolver: zodResolver(ForgotPasswordSchema),
     });
@@ -60,6 +60,7 @@ export function ForgotPassword({ onPageChange }: ForgotPasswordProps) {
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
         >
           Send Reset Link

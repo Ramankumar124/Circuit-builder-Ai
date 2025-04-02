@@ -14,17 +14,15 @@ import {
 import "@xyflow/react/dist/style.css";
 
 import { useCircuitContext } from "./context/circuitContext";
-// Define custom node types
 import { nodeTypes } from "./properties/nodeTypes";
 import { RootState } from "./redux/Store";
 import { useSelector } from "react-redux";
 
 const FlowChart: React.FC = () => {
+  
  const  {flowRef}=useCircuitContext()
   const node = useSelector((state:RootState) => state?.circuit?.node);
   const edge = useSelector((state:RootState) => state?.circuit?.edge);
-
-
 
   const [nodes,, onNodesChange] = useNodesState(node);
   const [edges, setEdges, onEdgesChange] = useEdgesState(edge);

@@ -1,6 +1,6 @@
-import LandingNavbar from "../../components/ui/LandingNavbar";
-import LandingEditor from "../../components/ui/LandingEditor";
-import LandingFeature from "../../components/ui/LandingFeature";
+import LandingNavbar from "../../components/custom/LandingNavbar";
+import LandingEditor from "../../components/custom/LandingEditor";
+import LandingFeature from "../../components/custom/LandingFeature";
 import templateData from "../../properties/landingTemplatesData";
 import CircuitTemplateCard from "./CircuitTemplateCard";
 import { ContainerScroll } from "../../components/ui/container-scroll-animation";

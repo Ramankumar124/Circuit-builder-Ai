@@ -28,7 +28,6 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUserData());
-    console.log("data aya");
   }, [dispatch]);
   if (loader) return <div><Spinner/></div>; 
   return (

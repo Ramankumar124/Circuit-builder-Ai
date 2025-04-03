@@ -12,6 +12,8 @@ import {
 } from "@/redux/api/circuitApi";
 import { MultiStepLoader as Loader } from "@/components/ui/multi-step-loader";
 import { loadingStates } from "@/constants/config";
+import { Zap } from "lucide-react";
+import { UserMenu } from "@/components/custom/user-menu";
 
 declare global {
   interface Window {
@@ -121,23 +123,21 @@ export default function PromptPage() {
         </div>
       )}
       <nav id="header" className="fixed w-full z-50 bg-[#191919]">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center ">
-          <div className="flex items-center text-bold text-xl text-[#899598] -ml-10">
-            <a href="/myprojects" className="text-bold text-white">
-              <span className="text-blue-700">My</span> Projects{" "}
-            </a>
-            {/* <RxHamburgerMenu /> */}
+     
+          <div className="flex w-full px-4 py-2 items-center text-bold text-xl text-[#899598]  justify-end">
+            <UserMenu/>
           </div>
-        </div>
       </nav>
 
       <div className="min-h-screen bg-[#191919] text-white flex flex-col items-center justify-center p-4  overflow-hidden">
         {/* Buttons */}
         <div className="flex items-center">
-          <a className="text-white font-bold text-6xl">
-            <span className="text-[#6E56CF]">Circuit</span>Builder
-            <span className="text-[#6E56CF]">AI</span>
-          </a>
+        <h1 className="text-6xl font-bold flex items-center">
+      <Zap className="mr-2 h-10 w-10 text-yellow-300" />
+      <span className="text-[#6E56CF]">Circuit</span>
+      <span className="text-white">Builder</span>
+      <span className="text-[#6E56CF]">AI</span>
+    </h1>
         </div>
         <div className="gap-2 p-5 justify-center items-center mt-30">
           <div className="grid grid-cols-2 md:grid-cols-3 w-300 gap-5">

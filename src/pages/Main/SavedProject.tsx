@@ -1,4 +1,3 @@
-
 import { RootState } from "../../redux/Store";
 import { useSelector } from "react-redux";
 import { useGetAllProjectsQuery } from "@/redux/api/projectApi";
@@ -7,53 +6,54 @@ import { useDispatch } from "react-redux";
 import { setCircuit } from "@/redux/features/circuitSlice";
 import { useNavigate } from "react-router-dom";
 import { nullable } from "zod";
+import { UserMenu } from "@/components/custom/user-menu";
+import { Zap } from "lucide-react";
 function SavedProject() {
   const id = useSelector((state: RootState) => state?.auth?.user?._id);
 
   const { data, isSuccess, isError } = useGetAllProjectsQuery(id!);
- const dispatch=useDispatch();
-const navigate=useNavigate();
-type CircuitType = {
-  explanation: string;
-  suggestions: string[];
-  circuitName: string;
-  node: any;
-  edge: any;
-  prompt: string;
-};
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  type CircuitType = {
+    explanation: string;
+    suggestions: string[];
+    circuitName: string;
+    node: any;
+    edge: any;
+    prompt: string;
+  };
 
-const handleOpenTool = (project: any) => {
-  console.log(project);
-const circuit=project?.circuit
-  dispatch(setCircuit({
-    explanation: circuit.explaination || '',
-    suggestions: circuit.suggestions || [],
-    circuitName: circuit.circuitName || '',
-    node: circuit.node || null,
-    edge: circuit.edge || null,
-    prompt: project.prompt || '',
-  }));
-  navigate("/dashboard");
-}
+  const handleOpenTool = (project: any) => {
+    console.log(project);
+    const circuit = project?.circuit;
+    dispatch(
+      setCircuit({
+        explanation: circuit.explaination || "",
+        suggestions: circuit.suggestions || [],
+        circuitName: circuit.circuitName || "",
+        node: circuit.node || null,
+        edge: circuit.edge || null,
+        prompt: project.prompt || "",
+      })
+    );
+    navigate("/dashboard");
+  };
   return (
     <div className="w-full h-screen bg-[#282626]">
       <nav id="header" className=" w-full z-50 bg-[#191919]">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center ">
-          <div className="flex items-center text-5xl text-[#899598] -ml-10">
-            <a className="text-white text-bold" href="/home">
-              Home
-            </a>
-          </div>
-
-          <h1 className="text-white text-3xl font-bold">My Projects</h1>
-          <div></div>
+        <div className="flex w-full px-4 py-2 items-center text-bold text-xl text-[#899598]  justify-between">
+          <h1 className="text-2xl font-bold flex items-center">
+            <Zap className="mr-2 h-5 w-5 text-yellow-300" />
+            <span className="text-[#6E56CF]">Circuit</span>
+            <span className="text-white">Builder</span>
+            <span className="text-[#6E56CF]">AI</span>
+          </h1>
+          <h1 className="text-[#6E56CF] font-bold text-3xl" >My Projects</h1>
+          <UserMenu />
         </div>
       </nav>
-      <div
-        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 animate__animated animate__fadeInUp"
-        
-      >
-        {data?.data?.data.map((project:any) => (
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 animate__animated animate__fadeInUp p-4">
+        {data?.data?.data.map((project: any) => (
           <div className="bg-neutral-900 rounded-xl overflow-hidden border border-neutral-700 shadow-lg hover:shadow-[#6E56CF]/10 transition-all duration-300 hover:-translate-y-1 group animate__fadeInUp">
             <div className="p-6">
               <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-[#6E56CF] to-[#5546a9] flex items-center justify-center mb-5">
@@ -102,10 +102,11 @@ const circuit=project?.circuit
                       ))}
                 </div>
                 <button
-                onClick={()=>handleOpenTool(project)}
-                 className="text-[#6E56CF] group-hover:text-white transition-colors flex items-center text-sm font-medium">
+                  onClick={() => handleOpenTool(project)}
+                  className="text-[#6E56CF] group-hover:text-white transition-colors flex items-center text-sm font-medium"
+                >
                   Open Tool
-                <FaArrowRightLong />
+                  <FaArrowRightLong />
                 </button>
               </div>
             </div>

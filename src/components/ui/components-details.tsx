@@ -183,12 +183,7 @@ export function ComponentDetails({ open, onOpenChange, componentId }: ComponentD
               </TabsContent>
             </Tabs>
 
-            <DialogFooter className="mt-4 flex flex-col sm:flex-row gap-2">
-              <Button variant="outline" size="sm" className="sm:ml-auto" onClick={() => onOpenChange(false)}>
-                Close
-              </Button>
-              <Button className="bg-purple-600 hover:bg-purple-700 text-white">Add to Circuit</Button>
-            </DialogFooter>
+      
           </>
         )}
       </DialogContent>

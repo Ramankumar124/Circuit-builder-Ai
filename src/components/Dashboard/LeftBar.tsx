@@ -4,13 +4,18 @@ import ComponentDropdowns from '../custom/ComponentsDropdown'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 import { FolderOpen } from 'lucide-react'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import useDownloadImage from '@/hooks/userDownloadImage'
 import { ReactFlowInstance } from '@xyflow/react'
 import { useCircuitContext } from '@/context/circuitContext'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
-
-const LeftBar = ({setSelectedComponent,setIsDetailsOpen,setisDialogOpen}) => {
+interface LeftBarProps {
+  setSelectedComponent: React.Dispatch<React.SetStateAction<any>>;
+  setIsDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setisDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+type ExportFormat = "png" | "jpeg" | "pdf" | "svg";
+const LeftBar:React.FC<LeftBarProps> = ({setSelectedComponent,setIsDetailsOpen,setisDialogOpen}) => {
       const { flowRef } = useCircuitContext();
       const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
       const [recentProjects, setRecentProjects] = useState([
@@ -56,6 +61,11 @@ const LeftBar = ({setSelectedComponent,setIsDetailsOpen,setisDialogOpen}) => {
                 setSelectedComponent={setSelectedComponent}
                 setIsDetailsOpen={setIsDetailsOpen}
               />
+              <div className="bg-slate-100 p-3 rounded-lg mt-2 mb-4">
+                <p className="text-sm text-slate-600 italic">
+                  <span className="font-medium">Note:</span> Click on any component to view detailed information.
+                </p>
+              </div>
             </TabsContent>
 
             <TabsContent
@@ -134,42 +144,38 @@ const LeftBar = ({setSelectedComponent,setIsDetailsOpen,setisDialogOpen}) => {
           </Tabs>
           <div className="flex justify-center mt-4 gap-4">
             <Button
-           
+                id="save project"
               className="bg-blue-500 hover:bg-blue-600 text-lg"
-              onClick={() => setisDialogOpen(true)}
+              onClick={
+                () =>{
+                     setisDialogOpen(true)
+                     console.log("dilog dabaya");
+                     }
+                    }
             >
               Save
             </Button>
-            <FormControl
-              fullWidth
-              style={{
-                width: "150px",
-                backgroundColor: "#404040",
-                color: "white",
-                border: "2px",
-              }}
-            >
-              <InputLabel id="dropdown-label" style={{ color: "white" }}>
-                Export As
-              </InputLabel>
+            <div className="w-[150px]">
               <Select
-                style={{ color: "white" }}
-                labelId="dropdown-label"
                 value={exportMethod}
-                onChange={(event) => {
-                  const format = event.target.value;
-                  setExportMethod(format);
-                  if (format) {
-                    downloadImage(format);
+                onValueChange={(value) => {
+                  setExportMethod(value);
+                  if (value) {
+                    downloadImage(value as ExportFormat);
                   }
                 }}
               >
-                <MenuItem value="png">PNG</MenuItem>
-                <MenuItem value="jpeg">JPEG</MenuItem>
-                <MenuItem value="pdf">PDF</MenuItem>
-                <MenuItem value="svg">SVG</MenuItem>
+                <SelectTrigger className="bg-white-800 text-black border-2">
+                  <SelectValue placeholder="Export As" className='text-black' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="png">PNG</SelectItem>
+                  <SelectItem value="jpeg">JPEG</SelectItem>
+                  <SelectItem value="pdf">PDF</SelectItem>
+                  <SelectItem value="svg">SVG</SelectItem>
+                </SelectContent>
               </Select>
-            </FormControl>
+            </div>
           </div>
     </div>
   )

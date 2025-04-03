@@ -31,6 +31,7 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
   }
 
   const generateQRCode = () => {
+
     setIsGeneratingQR(true)
     // Simulate loading
     setTimeout(() => {

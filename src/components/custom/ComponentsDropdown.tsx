@@ -1,8 +1,16 @@
 import { RootState } from "@/redux/Store";
-import { FormControl, MenuItem, Select,InputLabel } from "@mui/material";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 
 interface ComponentDropdownsProps {
   setSelectedComponent: React.Dispatch<React.SetStateAction<string | null>>;
@@ -61,39 +69,36 @@ const ComponentDropdowns = ({
       );
     }
   }, [circuitData]);
-  const handleChange = (type: string) => (event: HandleChangeEvent) => {
-    const firstElement = [...dropdownData[type]][0];
-    setSelectedComponent(firstElement);
-    setIsDetailsOpen(true);
-    setSelectedValues((prevSelectedValues: SelectedValues) => ({
-      ...prevSelectedValues,
-      [type]: event.target.value,
-    }));
-  };
 
   return (
-    <div>
+    <div className="space-y-4">
       {Object.keys(dropdownData).map((type) => (
-        <FormControl fullWidth key={type} style={{ marginBottom: "1rem" }}>
-          <InputLabel>
-            {type.charAt(0).toUpperCase() + type.slice(1)}
-          </InputLabel>
-          <Select
-            style={{ color: "white", backgroundColor: "#404040" }}
-            value={selectedValues[type] || ""}
-            onChange={handleChange(type)}
-          >
-            {[...dropdownData[type]].map((label, index) => (
-              <MenuItem
-                style={{ color: "black", backgroundColor: "white" }}
-                key={index}
-                value={label}
-              >
-                {label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <div key={type}>
+              
+                  <Select onValueChange={(value) => {
+                  setSelectedComponent(value);
+                  setIsDetailsOpen(true);
+                  setSelectedValues((prev) => ({
+                    ...prev,
+                    [type]: value,
+                  }));
+                  }}>
+                  <SelectTrigger className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 bg-white text-black border-2">
+                    <SelectValue placeholder={type.charAt(0).toUpperCase() + type.slice(1)} className='text-black' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                    <SelectLabel>{`Select ${type.charAt(0).toUpperCase() + type.slice(1)}`}</SelectLabel>
+                    {[...dropdownData[type]].map((label, index) => (
+                      <SelectItem key={index} value={label}>
+                      {label}
+                      </SelectItem>
+                    ))}
+                    </SelectGroup>
+                  </SelectContent>
+                  </Select>
+              
+        </div>
       ))}
     </div>
   );

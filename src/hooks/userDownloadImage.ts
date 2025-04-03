@@ -60,6 +60,16 @@ const useDownloadImage = (
                 // Allow DOM to update with new styles
                 await new Promise((resolve) => setTimeout(resolve, 500));
 
+                // Create a temporary canvas to add the text
+                const canvas = document.createElement('canvas');
+                canvas.width = flowRef.current.offsetWidth * 4; // Match pixelRatio
+                canvas.height = flowRef.current.offsetHeight * 4; // Match pixelRatio
+                const ctx = canvas.getContext('2d');
+
+                if (!ctx) {
+                    throw new Error("Canvas context not available");
+                }
+
                 const options = {
                     quality: 1,
                     pixelRatio: 4, // Higher for better quality
@@ -72,7 +82,8 @@ const useDownloadImage = (
                     filter: (node: HTMLElement) => {
                         return (
                             !node.classList?.contains("react-flow__controls") &&
-                            !node.classList?.contains("react-flow__attribution")
+                            !node.classList?.contains("react-flow__attribution") &&
+                            !node.classList?.contains("react-flow__minimap")
                         );
                     },
                     cacheBust: true, // Prevent caching issues
@@ -118,31 +129,56 @@ const useDownloadImage = (
                     }
                 });
 
-                if (format === "pdf") {
-                    const pdf = new jsPDF({
-                        orientation: "landscape",
-                        unit: "mm",
-                        format: "a4",
-                    });
-
-                    const imgProps = pdf.getImageProperties(dataUrl);
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-                    pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
-                    pdf.save(
-                        `circuit_diagram_${new Date().toISOString().slice(0, 10)}.pdf`
+                // Add the text to the canvas
+                const img = new Image();
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.font = `bold ${24 * 4}px sans-serif`; // Adjust font size as needed, multiplied by pixelRatio
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.5)"; // Semi-transparent black
+                    ctx.textAlign = "right";
+                    ctx.textBaseline = "bottom";
+                    ctx.fillText(
+                        "CircuitBuilderAI",
+                        canvas.width - 20 * 4, // Right margin, multiplied by pixelRatio
+                        canvas.height - 10 * 4 // Bottom margin, multiplied by pixelRatio
                     );
-                } else {
-                    const link = document.createElement("a");
-                    link.download = `circuit_diagram_${new Date()
-                        .toISOString()
-                        .slice(0, 10)}.${format}`;
-                    link.href = dataUrl;
-                    link.click();
-                }
 
-                setExportMethod("");
+                    // Get the final data URL from the canvas
+                    const finalDataUrl = canvas.toDataURL(`image/${format === 'jpeg' ? 'jpeg' : 'png'}`);
+
+                    if (format === "pdf") {
+                        const pdf = new jsPDF({
+                            orientation: "landscape",
+                            unit: "mm",
+                            format: "a4",
+                        });
+
+                        const imgProps = pdf.getImageProperties(finalDataUrl);
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                        pdf.addImage(finalDataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
+                        pdf.save(
+                            `circuit_diagram_${new Date().toISOString().slice(0, 10)}.pdf`
+                        );
+                    } else {
+                        const link = document.createElement("a");
+                        link.download = `circuit_diagram_${new Date()
+                            .toISOString()
+                            .slice(0, 10)}.${format}`;
+                        link.href = finalDataUrl;
+                        link.click();
+                    }
+
+                    setExportMethod("");
+                };
+                img.onerror = (error) => {
+                    console.error("Error loading image:", error);
+                    alert("Failed to add text to the diagram. Please try again.");
+                };
+                img.src = dataUrl;
+
+
             } catch (error) {
                 console.error("Error exporting:", error);
                 alert("Failed to export diagram. Please try again.");

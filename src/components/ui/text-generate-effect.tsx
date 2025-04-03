@@ -6,7 +6,7 @@ export const TextGenerateEffect = ({
   words,
   className,
   filter = true,
-  duration = 0.5,
+  duration = 0.1,
 }: {
   words: string;
   className?: string;
@@ -51,7 +51,7 @@ export const TextGenerateEffect = ({
 
   return (
     <div className={cn( className)}>
-      <div className="mt-4">
+      <div className="">
         <div className="   leading-snug ">
           {renderWords()}
         </div>

@@ -44,17 +44,11 @@ interface CircuitData {
 
 const Dashboard = () => {
   const [isDialogOpen, setisDialogOpen] = useState<boolean>(false);
-
   const [isShareOpen, setIsShareOpen] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState<string | null>(
-    null
-  );
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const prompt = useSelector((state: RootState) => state?.circuit?.prompt);
-  const circuitdata = useSelector(
-    (state: RootState) => state?.circuit as CircuitData
-  );
+
 
   const handleDialog = () => {
     setisDialogOpen(false);
@@ -69,18 +63,18 @@ const Dashboard = () => {
             <LeftBar
               setSelectedComponent={setSelectedComponent}
               setIsDetailsOpen={setIsDetailsOpen}
-              setisDialogOpen={setIsDetailsOpen}
+              setisDialogOpen={setisDialogOpen}
             />
           </div>
           <div
             id="mid"
-            className="w-[60%] h-[95%] flex items-start justify-center rounded-4xl  m-[20px]"
+            className="w-[60%]  flex items-start justify-center rounded-4xl  m-[20px]"
           >
             <FlowChart />
           </div>
           <div
             id="rightbar"
-            className=" w-1/5 bg-white rounded-4xl pt-3 dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col"
+            className=" w-1/5 h-full bg-white rounded-4xl pt-3 dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col"
           >
             <RightBar />
           </div>

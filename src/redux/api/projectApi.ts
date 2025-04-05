@@ -1,29 +1,6 @@
+import { CircuitState } from "@/interfaces/circuit";
 import { userApi } from "./apiSlice";
 
-interface Node {
-  id: string;
-  type: string;
-  data: Record<string, any>;
-  position: { x: number; y: number };
-}
-
-interface Edge {
-  id: string;
-  source: string;
-  sourceHandle: string;
-  target: string;
-  targetHandle: string;
-  type: string;
-  label?: string;
-}
-interface CircuitState {
-  prompt: string | null;
-  node: Node | null;
-  edge: Edge | null;
-  circuitName: string | null;
-  explanation: string | null;
-  suggestions: string[] | null;
-}
 export const projectApi = userApi.injectEndpoints({
   endpoints: (builder) => ({
     SavedProject: builder.mutation({

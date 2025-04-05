@@ -1,11 +1,14 @@
-import { History, Settings, Share, Zap } from 'lucide-react'
+import {Share, Zap } from 'lucide-react'
 import React from 'react'
 import { Badge } from '../ui/badge'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import { Button } from '../ui/button'
 import { UserMenu } from '../custom/user-menu'
 
-const Header = ({setIsShareOpen}) => {
+interface HeaderProps {
+  setIsShareOpen: (isOpen: boolean) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({setIsShareOpen}) => {
   return (
     <header className="bg-[#191919] text-white p-3 flex justify-between items-center shadow-md">
     <h1 className="text-2xl font-bold flex items-center">

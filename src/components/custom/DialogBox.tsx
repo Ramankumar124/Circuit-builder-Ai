@@ -1,35 +1,22 @@
 import { useState } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  IconButton,
-  TextField,
-  Button,
-} from "@mui/material";
-import { X } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { RootState } from "../../redux/Store";
 import { useSelector } from "react-redux";
 import { useSavedProjectMutation } from "@/redux/api/projectApi";
-import { Edge } from "@xyflow/react";
-import { redirect } from "react-router-dom";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { CircuitState } from "@/interfaces/circuit";
 interface ProjectDialogProps {
   open: boolean;
   onClose: () => void;
 }
-interface CircuitState {
-  prompt: string | null;
-  node: Node | null;
-  edge: Edge | null;
-  circuitName: string | null;
-  explanation: string | null;
-  suggestions: string[] | null;
-}
+
 const ProjectDialog: React.FC<ProjectDialogProps> = ({ open, onClose }) => {
   const [projectName, setProjectName] = useState("");
   const prompt = useSelector((state: RootState) => state?.circuit?.prompt);
-  const userId = useSelector((state: RootState) => state?.auth?.user?._id);
+
   const circuitData = useSelector(
     (state: RootState) => state?.circuit as CircuitState
   );
@@ -54,36 +41,34 @@ const ProjectDialog: React.FC<ProjectDialogProps> = ({ open, onClose }) => {
   };
 
   return (
-    <Dialog open={open} onClose={() => {}}>
-      <div className="flex justify-between items-center p-2 border-b border-gray-700">
-        <Toaster />
-        <DialogTitle className="text-lg font-semibold text-black">
-          Enter Project Name
-        </DialogTitle>
-        <IconButton onClick={onClose} className="text-white">
-          <X size={20} />
-        </IconButton>
-      </div>
-      <DialogContent>
-        <TextField
-          fullWidth
-          variant="outlined"
-          label="Project Name"
+    <Dialog open={open} onOpenChange={onClose}>
+      <Toaster/>
+      <DialogContent className="sm:max-w-[425px]">
+      <DialogHeader>
+        <DialogTitle>Enter Project Name</DialogTitle>
+        <DialogDescription>
+        Please enter a name to save your circuit project.
+        </DialogDescription>
+      </DialogHeader>
+      <div className="grid gap-4 py-4">
+        <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="name" className="text-right">
+          Project Name
+        </Label>
+        <Input
+          type="text"
+          id="name"
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
-          className="mt-4 mb-3 text-white "
+          className="col-span-3"
         />
-
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          style={{ marginTop: "10px" }}
-          onClick={handleSave}
-          disabled={isSuccess}
-        >
-          Save Project
+        </div>
+      </div>
+      <DialogFooter>
+        <Button type="submit" onClick={handleSave} disabled={isSuccess}>
+        Save Project
         </Button>
+      </DialogFooter>
       </DialogContent>
     </Dialog>
   );

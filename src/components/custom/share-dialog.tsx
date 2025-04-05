@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { FaFacebook, FaTwitter } from "react-icons/fa6"
 
 interface ShareDialogProps {
   open: boolean
@@ -32,6 +33,8 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
 
   const generateQRCode = () => {
 
+
+    
     setIsGeneratingQR(true)
     // Simulate loading
     setTimeout(() => {
@@ -85,12 +88,12 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
                 {isGeneratingQR ? (
                   <>
                     <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Generating QR Code...
+                    Generating Link...
                   </>
                 ) : (
                   <>
                     <QrCode className="h-4 w-4 mr-2" />
-                    Generate QR Code
+                    Generate Link
                   </>
                 )}
               </Button>
@@ -109,11 +112,11 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
           <TabsContent value="social" className="mt-4">
             <div className="grid grid-cols-2 gap-2">
               <Button variant="outline" className="justify-start">
-                <Twitter className="mr-2 h-4 w-4 text-blue-500" />
+                <FaTwitter className="mr-2 h-4 w-4 text-blue-500" />
                 Twitter
               </Button>
               <Button variant="outline" className="justify-start">
-                <Facebook className="mr-2 h-4 w-4 text-blue-700" />
+                <FaFacebook className="mr-2 h-4 w-4 text-blue-700" />
                 Facebook
               </Button>
               <Button variant="outline" className="justify-start">
@@ -137,29 +140,30 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
           </TabsContent>
 
           <TabsContent value="embed" className="mt-4">
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Embed Code</label>
-                <textarea
-                  className="mt-1 w-full rounded-md border border-slate-200 p-2 text-sm font-mono"
-                  rows={3}
-                  readOnly
-                  value={`<iframe src="${shareUrl}/embed" width="600" height="400" frameborder="0"></iframe>`}
-                ></textarea>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Preview</label>
-                <div className="mt-1 border border-slate-200 rounded-md p-2 bg-slate-50 h-32 flex items-center justify-center">
-                  <div className="text-sm text-slate-500">Embed Preview</div>
-                </div>
-              </div>
-
-              <Button variant="outline" className="w-full" onClick={copyToClipboard}>
-                <Copy className="h-4 w-4 mr-2" />
-                Copy Embed Code
+          {!showQR ? (
+              <Button variant="outline" className="w-full mt-4" onClick={generateQRCode} disabled={isGeneratingQR}>
+                {isGeneratingQR ? (
+                  <>
+                    <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Generating QR Code...
+                  </>
+                ) : (
+                  <>
+                    <QrCode className="h-4 w-4 mr-2" />
+                    Generate QR Code
+                  </>
+                )}
               </Button>
-            </div>
+            ) : (
+              <div className="mt-4 flex flex-col items-center">
+                <div className="w-32 h-32 bg-slate-100 rounded-lg flex items-center justify-center">
+                  <div className="w-24 h-24 bg-[url('/placeholder.svg?height=96&width=96')] bg-contain"></div>
+                </div>
+                <Button variant="outline" size="sm" className="mt-2" onClick={() => setShowQR(false)}>
+                  Hide QR Code
+                </Button>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
 

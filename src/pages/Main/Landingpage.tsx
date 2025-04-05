@@ -7,7 +7,6 @@ import { ContainerScroll } from "../../components/ui/container-scroll-animation"
 const LandingPage = () => {
   return (
     <>
-    
       <div>
         <LandingNavbar />
         <section
@@ -123,11 +122,10 @@ const LandingPage = () => {
                 <h1 className="text-4xl font-semibold  text-black dark:text-white mb-4 ">
                   Unleash the power of <br />
                   <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none ">
-                  Intuitive{"  "}
-                  <span className="text-[#6E56CF]">Circuit Editor</span>
+                    Intuitive{"  "}
+                    <span className="text-[#6E56CF]">Circuit Editor</span>
                   </span>
                 </h1>
-      
               </>
             }
           >
@@ -166,9 +164,9 @@ const LandingPage = () => {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M4 6h16M4 12h16M4 18h7"
                       ></path>
                     </svg>
@@ -182,9 +180,9 @@ const LandingPage = () => {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M12 4v16m8-8H4"
                       ></path>
                     </svg>
@@ -198,15 +196,15 @@ const LandingPage = () => {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                       ></path>
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                       ></path>
                     </svg>
@@ -220,9 +218,9 @@ const LandingPage = () => {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                       ></path>
                     </svg>
@@ -236,9 +234,9 @@ const LandingPage = () => {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
                       ></path>
                     </svg>
@@ -263,9 +261,9 @@ const LandingPage = () => {
                         stroke="currentColor"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M19 9l-7 7-7-7"
                         ></path>
                       </svg>
@@ -481,13 +479,13 @@ const LandingPage = () => {
                       <path
                         d="M245 125 L 320 125 L 320 205 L 400 205"
                         stroke="#6E56CF"
-                        stroke-width="2"
+                        strokeWidth="2"
                         fill="none"
                       ></path>
                       <path
                         d="M245 145 L 280 145 L 280 350 L 300 350"
                         stroke="#6E56CF"
-                        stroke-width="2"
+                        strokeWidth="2"
                         fill="none"
                       ></path>
                     </svg>
@@ -512,9 +510,9 @@ const LandingPage = () => {
                         stroke="currentColor"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
                         ></path>
                       </svg>
@@ -599,9 +597,9 @@ const LandingPage = () => {
                                 stroke="currentColor"
                               >
                                 <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
                                   d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
                                 ></path>
                               </svg>
@@ -622,9 +620,9 @@ const LandingPage = () => {
                                 stroke="currentColor"
                               >
                                 <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
                                   d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
                                 ></path>
                               </svg>

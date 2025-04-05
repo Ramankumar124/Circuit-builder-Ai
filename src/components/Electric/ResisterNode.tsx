@@ -29,7 +29,7 @@ const  {firstBand,secondBand,thirdBand,fourthBand,fifthBand}=data;
             .rs3 { fill: #FFFFFF; stroke: #000000; stroke-miterlimit: 10; }
             .rs4 { fill: ${thirdBand}; stroke: #000000; stroke-miterlimit: 10; }
             .rs5 { fill:${secondBand} ; stroke: #000000; stroke-miterlimit: 10; }
-            .rs6 { fill: none; stroke: #000000; stroke-width: 2; stroke-miterlimit: 10; }
+            .rs6 { fill: none; stroke: #000000;strokeWidth: 2; stroke-miterlimit: 10; }
             .rs7 { fill: ${fourthBand}; stroke: #000000; stroke-miterlimit: 10; }
           `}
         </style>

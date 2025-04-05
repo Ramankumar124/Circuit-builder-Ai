@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+
 import { ArrowRight } from 'lucide-react';
 import {
     InputOTP,
@@ -22,7 +22,7 @@ interface OTPVerificationProps {
 
 const VerifyForgotPassword=({ email, onPageChange }: OTPVerificationProps) =>{
 
-  const {register,handleSubmit,formState:{isSubmitting},setValue}=useForm<OtpInput>({
+  const {handleSubmit,formState:{isSubmitting},setValue}=useForm<OtpInput>({
     resolver:zodResolver(otpSchema)
   })
 
@@ -88,8 +88,9 @@ const VerifyForgotPassword=({ email, onPageChange }: OTPVerificationProps) =>{
         <button
           type="submit"
           className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
+          disabled={isSubmitting}
         >
-          Verify OTP
+         {isSubmitting?"Verifying...":"Verify OTP"} 
           <ArrowRight className="h-4 w-4" />
         </button>
 

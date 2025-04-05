@@ -35,12 +35,6 @@ type NodeType = {
   };
 };
 
-interface CircuitData {
-  node?: NodeType[] | null;
-  prompt?: string;
-  explanation?: string;
-  circuitName?: string;
-}
 
 const Dashboard = () => {
   const [isDialogOpen, setisDialogOpen] = useState<boolean>(false);

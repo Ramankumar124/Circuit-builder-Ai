@@ -2,7 +2,7 @@ import { createContext, useContext, ReactNode, useRef } from "react";
 
 // Define the shape of the context data
 interface circuitContextType {
-  flowRef:object 
+  flowRef:React.RefObject<HTMLDivElement> ;
 }
 
 // Create the context with a default value (can be null initially)
@@ -13,7 +13,7 @@ export const CircuitProvider = ({ children }: { children: ReactNode }) => {
   const flowRef =  useRef<HTMLDivElement | null>(null);
 
   return (
-    <circuitContext.Provider value={{flowRef} }>
+    <circuitContext.Provider value={{flowRef:flowRef as React.RefObject<HTMLDivElement>} }>
       {children}
     </circuitContext.Provider>
   );

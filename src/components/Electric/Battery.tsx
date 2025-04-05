@@ -20,7 +20,7 @@ return(
       .b1 { fill: #000; opacity: 0.9; stroke: #000; stroke-miterlimit: 10; }
       .b2 { fill: #eec22d; opacity: 0.71; stroke: #000; stroke-miterlimit: 10; }
       .b3 { fill: #000; stroke: #000; stroke-miterlimit: 10; }
-      .b4 { stroke: #000; stroke-width: 8; stroke-miterlimit: 10; }
+      .b4 { stroke: #000;strokeWidth: 8; stroke-miterlimit: 10; }
       .b5 { font-family: MyriadPro-Regular; font-size: 132.76px; opacity: 0.79 ;stroke: #ffffff }
     `}
   </style>

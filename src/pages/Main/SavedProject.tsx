@@ -48,13 +48,13 @@ function SavedProject() {
             <span className="text-white">Builder</span>
             <span className="text-[#6E56CF]">AI</span>
           </h1>
-          <h1 className="text-[#6E56CF] font-bold text-3xl" >My Projects</h1>
+          <h1 className="text-[#6E56CF] font-bold text-3xl">My Projects</h1>
           <UserMenu />
         </div>
       </nav>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 animate__animated animate__fadeInUp p-4">
-        {data?.data?.data.map((project: any) => (
-          <div className="bg-neutral-900 rounded-xl overflow-hidden border border-neutral-700 shadow-lg hover:shadow-[#6E56CF]/10 transition-all duration-300 hover:-translate-y-1 group animate__fadeInUp">
+        {data?.data?.data.map((project: any, index: number) => (
+          <div key={index} className="bg-neutral-900 rounded-xl overflow-hidden border border-neutral-700 shadow-lg hover:shadow-[#6E56CF]/10 transition-all duration-300 hover:-translate-y-1 group animate__fadeInUp">
             <div className="p-6">
               <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-[#6E56CF] to-[#5546a9] flex items-center justify-center mb-5">
                 <svg
@@ -65,9 +65,9 @@ function SavedProject() {
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
                   ></path>
                 </svg>
@@ -77,7 +77,7 @@ function SavedProject() {
               </h3>{" "}
               *
               <p className="text-neutral-400 mb-4">
-                {project?.circuit.explaination}
+                {project?.circuit?.explaination}
               </p>
               <div className="flex justify-between items-center">
                 <div className="flex space-x-1">

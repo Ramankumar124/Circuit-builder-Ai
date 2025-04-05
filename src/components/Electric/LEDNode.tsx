@@ -28,9 +28,9 @@ let color:string=data.color || "red"
      
       >
         <style>
-          {`.${data.identifier}0{opacity:0.79;fill:${color};stroke:#000000;stroke-width:6;stroke-miterlimit:10;}
-            .${data.identifier}1{fill:none;stroke:#000000;stroke-width:6;stroke-miterlimit:10;}
-            .${data.identifier}2{fill:none;stroke:#000000;stroke-width:10;stroke-miterlimit:10;}`}
+          {`.${data.identifier}0{opacity:0.79;fill:${color};stroke:#000000;strokeWidth:6;stroke-miterlimit:10;}
+            .${data.identifier}1{fill:none;stroke:#000000;strokeWidth:6;stroke-miterlimit:10;}
+            .${data.identifier}2{fill:none;stroke:#000000;strokeWidth:10;stroke-miterlimit:10;}`}
         </style>
 
         {/* LED Body */}

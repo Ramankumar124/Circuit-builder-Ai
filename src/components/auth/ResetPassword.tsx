@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Lock, ArrowRight } from "lucide-react";
 import { z } from "zod";
 import Api from "@/api";
@@ -106,9 +105,9 @@ export function ResetPassword({ onPageChange }: ResetPasswordProps) {
         <button
           type="submit"
           className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
+          disabled={isSubmitting}
         >
-          Reset Password
-          <ArrowRight className="h-4 w-4" />
+        {isSubmitting?"Submitting...":"  Reset Password"};          <ArrowRight className="h-4 w-4" />
         </button>
       </form>
     </div>

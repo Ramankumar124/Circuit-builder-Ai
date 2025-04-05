@@ -33,6 +33,7 @@ function FallbackUI() {
             >
               Refresh Page
             </button>
+            
             <button
               onClick={() => window.location.href = "/"}
               className="flex-1 px-4 py-2 text-white bg-primary rounded hover:bg-opacity-90 transition"

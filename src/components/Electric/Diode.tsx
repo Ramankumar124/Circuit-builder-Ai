@@ -1,9 +1,23 @@
 import { Handle, Position } from "@xyflow/react";
 
 import React from "react";
-
-const Diode: React.FC = ({ data }) => {
+interface componentProps {
+  data: {
+    label:string,
+    first: {
+      type: "source" | "target";
+      pintype: "positive" | "negative";
+    };
+    second: {
+      type: "source" | "target";
+      pintype: "positive" | "negative";
+    };
+  };
+}
+const Diode: React.FC<componentProps> = ({ data }) => {
   return (
+  
+    
     <div style={{ position: "relative", width: 80, height: 80 }}>
       <svg viewBox="0 0 792 792" xmlns="http://www.w3.org/2000/svg">
         <style>
@@ -32,6 +46,7 @@ const Diode: React.FC = ({ data }) => {
             className="d0"
             d="M668.17 353.71c0.8 49.15-12.34 89.21-29.33 89.49l-82.47 1.34c6.31-24.31 9.83-55.37 9.29-89.16-0.55-33.79-5.07-64.72-12.17-88.81l82.47-1.34C652.95 264.94 667.37 304.56 668.17 353.71z"
           />
+    
           <ellipse
             transform="matrix(0.9999 -0.0162 0.0162 0.9999 -5.8143 3.6559)"
             className="d1"
@@ -61,12 +76,11 @@ const Diode: React.FC = ({ data }) => {
           />
         </g>
       </svg>
-
       {/* Positive Terminal Handle */}
       <Handle
-        type={data.firsttype}
+        type={data?.first?.type}
         position={Position.Top}
-        id="positive"
+        id={data?.first?.pintype}
         style={{
           left: "8%",
           top: "37px",
@@ -78,9 +92,9 @@ const Diode: React.FC = ({ data }) => {
 
       {/* Negative Terminal Handle */}
       <Handle
-        type={data.secondtype}
+        type={data?.second?.type}
         position={Position.Top}
-        id="negative"
+        id={data?.second?.pintype}
         style={{
           left: "100%",
           top: "36px",

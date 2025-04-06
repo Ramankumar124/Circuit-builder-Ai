@@ -3,9 +3,8 @@ import { useSelector } from "react-redux";
 import { useGetAllProjectsQuery } from "@/redux/api/projectApi";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
-import { setCircuit } from "@/redux/features/circuitSlice";
+import { setCircuit, setProjectId } from "@/redux/features/circuitSlice";
 import { useNavigate } from "react-router-dom";
-import { nullable } from "zod";
 import { UserMenu } from "@/components/custom/user-menu";
 import { Zap } from "lucide-react";
 function SavedProject() {
@@ -14,18 +13,14 @@ function SavedProject() {
   const { data, isSuccess, isError } = useGetAllProjectsQuery(id!);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  type CircuitType = {
-    explanation: string;
-    suggestions: string[];
-    circuitName: string;
-    node: any;
-    edge: any;
-    prompt: string;
-  };
+
+
 
   const handleOpenTool = (project: any) => {
     console.log(project);
     const circuit = project?.circuit;
+    if(project) console.log(project.id);
+    
     dispatch(
       setCircuit({
         explanation: circuit.explaination || "",
@@ -34,8 +29,10 @@ function SavedProject() {
         node: circuit.node || null,
         edge: circuit.edge || null,
         prompt: project.prompt || "",
-      })
+      }),
     );
+    dispatch(setProjectId({projectId:project.id}))
+
     navigate("/dashboard");
   };
   return (

@@ -8,7 +8,6 @@ interface Node {
   position: { x: number; y: number };
 }
 
-
 interface Edge {
   id: string;
   source: string;
@@ -20,6 +19,7 @@ interface Edge {
 }
 
 interface CircuitState {
+  projectId: string | null;
   prompt: string | null;
   node: Node | null;
   edge: Edge | null;
@@ -41,12 +41,13 @@ const saveState = (key: string, value: any) => {
 
 // Initial state with data loaded from sessionStorage
 const initialState: CircuitState = {
+  projectId: loadState<string | null>("projectId", null),
   node: loadState<Node | null>("nodes", null),
   edge: loadState<Edge | null>("edges", null),
   circuitName: loadState<string | null>("circuitName", null),
   explanation: loadState<string | null>("explanation", null),
   suggestions: loadState<string[] | null>("suggestions", null),
-  prompt: loadState<string | null>("prompt", null)
+  prompt: loadState<string | null>("prompt", null),
 };
 
 export const circuitSlice = createSlice({
@@ -55,14 +56,22 @@ export const circuitSlice = createSlice({
   reducers: {
     setCircuit: (
       state,
-      action: PayloadAction<{ explanation: string; suggestions: string[]; circuitName: string; node: Node; edge: Edge, prompt: string }>
+      action: PayloadAction<{
+        explanation: string;
+        suggestions: string[];
+        circuitName: string;
+        node: Node;
+        edge: Edge;
+        prompt: string;
+      }>
     ) => {
+
       state.node = action.payload.node;
       state.edge = action.payload.edge;
       state.circuitName = action.payload.circuitName;
       state.explanation = action.payload.explanation;
       state.suggestions = action.payload.suggestions;
-      state.prompt = action.payload.prompt
+      state.prompt = action.payload.prompt;
 
       // Save each property in sessionStorage
       saveState("nodes", state.node);
@@ -73,6 +82,7 @@ export const circuitSlice = createSlice({
       saveState("prompt", state.prompt);
     },
     clearCircuit: (state) => {
+      state.projectId=null;
       state.node = null;
       state.edge = null;
       state.circuitName = null;
@@ -87,8 +97,12 @@ export const circuitSlice = createSlice({
       sessionStorage.removeItem("suggestions");
       sessionStorage.removeItem("prompt");
     },
+    setProjectId: (state, action: PayloadAction<{ projectId: string }>) => {
+      state.projectId = action.payload.projectId;
+      saveState("projectId", state.projectId);
+    },
   },
 });
 
-export const { setCircuit, clearCircuit } = circuitSlice.actions;
+export const { setCircuit, clearCircuit,setProjectId } = circuitSlice.actions;
 export default circuitSlice.reducer;

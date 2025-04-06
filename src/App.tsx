@@ -1,9 +1,5 @@
 import "./App.css";
-import {
-  Route,
-  Routes,
-  BrowserRouter,
-} from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/Dashboard/Dashbaord";
 import PromptPage from "./pages/Main/PromptPage";
@@ -18,18 +14,22 @@ import { useEffect } from "react";
 import NotFound from "./pages/NotFound";
 import AuthLayout from "./pages/auth";
 import { Spinner } from "./Spinner";
-
+import SharedProjectLoader from "./pages/ShareProject/ShareProjectLoader";
 
 function App() {
-
-  const {user,loader} = useSelector((state: RootState) => state?.auth);
+  const { user, loader } = useSelector((state: RootState) => state?.auth);
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(fetchUserData());
   }, [dispatch]);
-  if (loader) return <div><Spinner/></div>; 
+  if (loader)
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   return (
     <>
       <BrowserRouter>
@@ -39,6 +39,8 @@ function App() {
           <Route element={<ProtectedRoute user={user} />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="home" element={<PromptPage />} />
+            <Route path="/shared/:shareId" element={<SharedProjectLoader />} />
+
             <Route path="myprojects" element={<SavedProject />} />
           </Route>
           <Route

@@ -1,6 +1,12 @@
-
-import { useState } from "react"
-import { Check, Copy, Facebook, Link, Twitter, Mail, QrCode } from "lucide-react"
+import { useState } from "react";
+import {
+  Check,
+  Copy,
+  Link,
+  Mail,
+  QrCode,
+} from "lucide-react";
+import { CiLink } from "react-icons/ci";
 import {
   Dialog,
   DialogContent,
@@ -8,47 +14,82 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FaFacebook, FaTwitter } from "react-icons/fa6"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FaFacebook, FaTwitter } from "react-icons/fa6";
+import {  useLazyCreateShareLinkQuery } from "@/redux/api/shareApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/Store";
+import toast, { Toaster } from "react-hot-toast";
 
 interface ShareDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
-  const [copied, setCopied] = useState(false)
-  const [isGeneratingQR, setIsGeneratingQR] = useState(false)
-  const [showQR, setShowQR] = useState(false)
-  const shareUrl = "https://circuitbuilderai.com/projects/ten-led-circuit"
+  const [copied, setCopied] = useState(false);
+  const [isGeneratingQR, setIsGeneratingQR] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
+
+  const projectId = useSelector((state: RootState) => state.circuit.projectId);
+
+  const [generateLink, { isLoading }] = useLazyCreateShareLinkQuery();
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(shareUrl)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const generateShareLink = async () => {
+    if (!projectId) {
+      toast.error("Please save your project before sharing");
+      return;
+    }
+
+    console.log("Generating share link for project:", projectId);
+
+    try {
+      // Use RTK Query mutation
+      const result = await generateLink(projectId);
+      console.log("RTK Query response:", result);
+
+      // Check for success response
+      if (result.data && result.data.data) {
+        setShareUrl(result.data.data);
+        toast.success("Share link generated successfully!");
+      } else if (result.error) {
+        console.error("Error from RTK Query:", result.error);
+        toast.error("Failed to generate share link");
+      }
+    } catch (error) {
+      console.error("Error generating share link:", error);
+      toast.error("Failed to generate share link");
+    }
+  };
 
   const generateQRCode = () => {
-
-
-    
-    setIsGeneratingQR(true)
+    setIsGeneratingQR(true);
     // Simulate loading
     setTimeout(() => {
-      setIsGeneratingQR(false)
-      setShowQR(true)
-    }, 1000)
-  }
+      setIsGeneratingQR(false);
+      setShowQR(true);
+    }, 1000);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      <Toaster />
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl">Share your circuit</DialogTitle>
-          <DialogDescription>Anyone with the link can view this circuit</DialogDescription>
+          <DialogDescription>
+            Anyone with the link can view this circuit
+          </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="link" className="mt-4">
@@ -61,7 +102,7 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
           <TabsContent value="link" className="mt-4">
             <div className="flex items-center space-x-2">
               <div className="grid flex-1 gap-2">
-                <Input value={shareUrl} readOnly className="w-full" />
+                <Input value={shareUrl} placeholder="Create Your Link" readOnly className="w-full" />
               </div>
               <Button
                 type="submit"
@@ -84,15 +125,19 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
             </div>
 
             {!showQR ? (
-              <Button variant="outline" className="w-full mt-4" onClick={generateQRCode} disabled={isGeneratingQR}>
-                {isGeneratingQR ? (
+              <Button
+                variant="outline"
+                className="w-full mt-4"
+                onClick={generateShareLink}
+              >
+                {isLoading ? (
                   <>
                     <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
                     Generating Link...
                   </>
                 ) : (
                   <>
-                    <QrCode className="h-4 w-4 mr-2" />
+                    <CiLink />
                     Generate Link
                   </>
                 )}
@@ -102,7 +147,12 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
                 <div className="w-32 h-32 bg-slate-100 rounded-lg flex items-center justify-center">
                   <div className="w-24 h-24 bg-[url('/placeholder.svg?height=96&width=96')] bg-contain"></div>
                 </div>
-                <Button variant="outline" size="sm" className="mt-2" onClick={() => setShowQR(false)}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2"
+                  onClick={() => setShowQR(false)}
+                >
                   Hide QR Code
                 </Button>
               </div>
@@ -130,7 +180,9 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
             </div>
 
             <div className="mt-4">
-              <label className="text-sm font-medium">Add a message (optional)</label>
+              <label className="text-sm font-medium">
+                Add a message (optional)
+              </label>
               <textarea
                 className="mt-1 w-full rounded-md border border-slate-200 p-2 text-sm"
                 rows={3}
@@ -140,8 +192,13 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
           </TabsContent>
 
           <TabsContent value="embed" className="mt-4">
-          {!showQR ? (
-              <Button variant="outline" className="w-full mt-4" onClick={generateQRCode} disabled={isGeneratingQR}>
+            {!showQR ? (
+              <Button
+                variant="outline"
+                className="w-full mt-4"
+                onClick={generateQRCode}
+                disabled={isGeneratingQR}
+              >
                 {isGeneratingQR ? (
                   <>
                     <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
@@ -159,7 +216,12 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
                 <div className="w-32 h-32 bg-slate-100 rounded-lg flex items-center justify-center">
                   <div className="w-24 h-24 bg-[url('/placeholder.svg?height=96&width=96')] bg-contain"></div>
                 </div>
-                <Button variant="outline" size="sm" className="mt-2" onClick={() => setShowQR(false)}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2"
+                  onClick={() => setShowQR(false)}
+                >
                   Hide QR Code
                 </Button>
               </div>
@@ -168,13 +230,19 @@ export function ShareDialog({ open, onOpenChange }: ShareDialogProps) {
         </Tabs>
 
         <DialogFooter className="mt-4 flex flex-col sm:flex-row gap-2">
-          <div className="text-xs text-slate-500">This circuit will be accessible to anyone with the link</div>
-          <Button variant="outline" size="sm" className="sm:ml-auto" onClick={() => onOpenChange(false)}>
+          <div className="text-xs text-slate-500">
+            This circuit will be accessible to anyone with the link
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="sm:ml-auto"
+            onClick={() => onOpenChange(false)}
+          >
             Close
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-

@@ -3,12 +3,16 @@ import React from 'react'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { UserMenu } from '../custom/user-menu'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/redux/Store'
+import { TextGenerateEffect } from '../ui/text-generate-effect'
 
 interface HeaderProps {
   setIsShareOpen: (isOpen: boolean) => void;
 }
 
 const Header: React.FC<HeaderProps> = ({setIsShareOpen}) => {
+  const circuitData=useSelector((state:RootState)=>state.circuit)
   return (
     <header className="bg-[#191919] text-white p-3 flex justify-between items-center shadow-md">
     <h1 className="text-2xl font-bold flex items-center">
@@ -18,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({setIsShareOpen}) => {
       <span className="text-purple-300">AI</span>
     </h1>
     <div className="flex items-center space-x-2">
-      <h2 className="text-xl font-medium">Ten LED Circuit</h2>
+     <TextGenerateEffect duration={3} className='text-xl font-medium' words={circuitData?.circuitName as string}/>
       <Badge
         variant="outline"
         className="ml-2 bg-purple-800/50 text-purple-100 border-purple-700"

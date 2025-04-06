@@ -1,8 +1,19 @@
 import { Handle, Position } from "@xyflow/react";
 
 import React from "react";
-
-const Switch: React.FC = ({ data }) => {
+interface componentProps {
+  data: {
+    first: {
+      type: "source" | "target";
+      pintype: "positive" | "negative";
+    };
+    second: {
+      type: "source" | "target";
+      pintype: "positive" | "negative";
+    };
+  };
+}
+const Switch: React.FC<componentProps> = ({ data }) => {
   return (
     <div style={{ position: "relative", width: 80, height: 80 }}>
       <svg width="200" height="200" viewBox="0 0 8920 7920">
@@ -42,9 +53,9 @@ const Switch: React.FC = ({ data }) => {
       </svg>
       {/* Positive Terminal Handle */}
       <Handle
-        type={data.firsttype}
+        type={data?.first?.type}
         position={Position.Left}
-        id="positive"
+        id={data?.first?.pintype}
         style={{
           left: "98%",
           top: "115px",
@@ -56,9 +67,9 @@ const Switch: React.FC = ({ data }) => {
 
       {/* Negative Terminal Handle */}
       <Handle
-        type={data.secondtype}
+        type={data?.second?.type}
         position={Position.Right}
-        id="negative"
+        id={data?.second?.pintype}
         style={{
           left: "125%",
           top: "115px",

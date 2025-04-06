@@ -8,6 +8,8 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { CircuitState } from "@/interfaces/circuit";
+import { useDispatch } from "react-redux";
+import { setCircuit, setProjectId } from "@/redux/features/circuitSlice";
 interface ProjectDialogProps {
   open: boolean;
   onClose: () => void;
@@ -16,7 +18,7 @@ interface ProjectDialogProps {
 const ProjectDialog: React.FC<ProjectDialogProps> = ({ open, onClose }) => {
   const [projectName, setProjectName] = useState("");
   const prompt = useSelector((state: RootState) => state?.circuit?.prompt);
-
+ const dispatch=useDispatch();
   const circuitData = useSelector(
     (state: RootState) => state?.circuit as CircuitState
   );
@@ -29,8 +31,13 @@ const ProjectDialog: React.FC<ProjectDialogProps> = ({ open, onClose }) => {
         projectName,
         prompt,
       };
-      await saveProject(payload);
-      toast.success("Project saved succesfully ope");
+   const response =  await saveProject(payload);
+console.log(response.data.data);
+ dispatch(setProjectId({
+  projectId:response?.data?.data.id as string
+ }))
+
+      toast.success("Project saved succesfully ");
       setTimeout(() => {
         onClose();
       }, 1500);

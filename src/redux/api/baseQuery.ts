@@ -8,6 +8,7 @@ type AxiosBaseQueryArgs = {
   method?: AxiosRequestConfig["method"];
   data?: AxiosRequestConfig["data"];
   params?: AxiosRequestConfig["params"];
+  credentials?: RequestCredentials;
 };
 
 // Define the shape of the error response
@@ -26,10 +27,19 @@ const axiosBaseQuery =
         method,
         data,
         params,
+        withCredentials: true, // Always include credentials
       });
       return { data: result.data };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
+      console.error("RTK Query API request failed:", {
+        message: err.message,
+        url,
+        params,
+        status: err.response?.status,
+        responseData: err.response?.data,
+      });
+
       return {
         error: {
           status: err.response?.status,

@@ -7,10 +7,11 @@ import { setCircuit, setProjectId } from "@/redux/features/circuitSlice";
 import { useNavigate } from "react-router-dom";
 import { UserMenu } from "@/components/custom/user-menu";
 import { Zap } from "lucide-react";
+import Loader from "@/components/custom/Loader";
 function SavedProject() {
   const id = useSelector((state: RootState) => state?.auth?.user?._id);
 
-  const { data, isSuccess, isError } = useGetAllProjectsQuery(id!);
+  const { data, isLoading } = useGetAllProjectsQuery(id!);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -36,7 +37,8 @@ function SavedProject() {
     navigate("/dashboard");
   };
   return (
-    <div className="w-full h-screen bg-[#282626]">
+
+    <div className="w-full h-screen bg-[#282626] overflow-y-scroll">
       <nav id="header" className=" w-full z-50 bg-[#191919]">
         <div className="flex w-full px-4 py-2 items-center text-bold text-xl text-[#899598]  justify-between">
           <h1 className="text-2xl font-bold flex items-center">
@@ -49,7 +51,8 @@ function SavedProject() {
           <UserMenu />
         </div>
       </nav>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 animate__animated animate__fadeInUp p-4">
+     
+   { isLoading?<Loader/>  : <>  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 animate__animated animate__fadeInUp p-4">
         {data?.data?.data.map((project: any, index: number) => (
           <div key={index} className="bg-neutral-900 rounded-xl overflow-hidden border border-neutral-700 shadow-lg hover:shadow-[#6E56CF]/10 transition-all duration-300 hover:-translate-y-1 group animate__fadeInUp">
             <div className="p-6">
@@ -110,7 +113,7 @@ function SavedProject() {
             <div className="h-2 bg-gradient-to-r from-[#6E56CF] to-[#7d66dc]"></div>
           </div>
         ))}
-      </div>
+      </div> </>}
     </div>
   );
 }

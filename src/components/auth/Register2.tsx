@@ -2,25 +2,38 @@ import Api from "@/api";
 import { register2FormSchema } from "@/lib/Schemas/authSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, Camera, User } from "lucide-react";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
-
-type AuthPage = 'login' | 'register1' | 'register2' |'forgot-password' | 'otp' | 'reset-password' | 'dashboard' |'verify-forgot-password' |'otp-verifyEmail';
+import { FaAt } from "react-icons/fa";
+type AuthPage =
+  | "login"
+  | "register1"
+  | "register2"
+  | "forgot-password"
+  | "otp"
+  | "reset-password"
+  | "dashboard"
+  | "verify-forgot-password"
+  | "otp-verifyEmail";
 interface RegisterProps {
   onPageChange: (page: AuthPage, email?: string) => void;
-  localdata:any,
-  setlocaldata:any
+  localdata: any;
+  setlocaldata: any;
 }
 
-const Register2 = ({ onPageChange ,localdata,setlocaldata}: RegisterProps) => {
+const Register2 = ({
+  onPageChange,
+  localdata,
+  setlocaldata,
+}: RegisterProps) => {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   type Register2Inputs = z.infer<typeof register2FormSchema>;
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { isSubmitting, errors },
     setValue,
     trigger,
   } = useForm<Register2Inputs>({
@@ -30,9 +43,15 @@ const Register2 = ({ onPageChange ,localdata,setlocaldata}: RegisterProps) => {
     // Update localdata with Register2 form data
     const updatedData = { ...localdata, ...data };
     setlocaldata(updatedData);
-    
+
     // Check if all required data is present
-    if (updatedData.email && updatedData.password && updatedData.fullName && updatedData.userName && updatedData.avatar) {
+    if (
+      updatedData.email &&
+      updatedData.password &&
+      updatedData.fullName &&
+      updatedData.userName &&
+      updatedData.avatar
+    ) {
       try {
         // Prepare FormData for API call
         const formData = new FormData();
@@ -43,15 +62,14 @@ const Register2 = ({ onPageChange ,localdata,setlocaldata}: RegisterProps) => {
         formData.append("avatar", updatedData.avatar[0]); // Append the file
 
         // Make API call
-         await Api.post("/auth/register", formData,{
-            headers: {
-              "Content-Type": "multipart/form-data", // Set the content type
-            },});
-          onPageChange("otp-verifyEmail", updatedData.email); // Navigate to OTP page
-        
-      } catch (error:any) {
-  
-        toast.error(error?.response?.data?.message || error?.message )
+        await Api.post("/auth/register", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set the content type
+          },
+        });
+        onPageChange("otp-verifyEmail", updatedData.email); // Navigate to OTP page
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message || error?.message);
         console.error("Error during registration:", error);
       }
     } else {
@@ -69,7 +87,7 @@ const Register2 = ({ onPageChange ,localdata,setlocaldata}: RegisterProps) => {
 
   return (
     <div>
-      <Toaster/>
+      <Toaster />
       <div className="text-center">
         <h1 className="text-3xl font-bold text-white">Create Account</h1>
         <p className="text-gray-400 mt-2">Step 2 of 2</p>
@@ -116,7 +134,9 @@ const Register2 = ({ onPageChange ,localdata,setlocaldata}: RegisterProps) => {
 
         {/* Name Field */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-200">Name</label>
+          <label className="block text-sm font-medium text-gray-200">
+            Name
+          </label>
           <div className="relative">
             <User className="absolute left-3 top-3 text-gray-400 h-5 w-5" />
             <input
@@ -132,8 +152,11 @@ const Register2 = ({ onPageChange ,localdata,setlocaldata}: RegisterProps) => {
 
         {/* Bio Field */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-200">Bio</label>
+          <label className="block text-sm font-medium text-gray-200 pt-2">
+            User Name
+          </label>
           <div className="relative">
+            <FaAt className="absolute left-3 top-3 text-gray-400 h-5 w-5" />
             <input
               {...register("userName")}
               className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white "
@@ -147,21 +170,21 @@ const Register2 = ({ onPageChange ,localdata,setlocaldata}: RegisterProps) => {
 
         {/* Submit Button */}
         <div className="flex justify-between gap-6 mx-8">
-        <button
-          type="button"
-          onClick={()=>onPageChange("register1")}
-          className="w-fit bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 mt-4"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </button>
-        <button
-          type="submit"
-          className="w-fit bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 mt-4"
-        >
-          Next
-          <ArrowRight className="h-4 w-4" />
-        </button>
+          <button
+            type="button"
+            onClick={() => onPageChange("register1")}
+            className="w-fit bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 mt-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
+          <button
+            type="submit"
+            className="w-fit bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 mt-4"
+          >
+            {isSubmitting ? "Submitting..." : "Next"}
+            {isSubmitting && <ArrowRight className="h-4 w-4" />}
+          </button>
         </div>
       </form>
     </div>

@@ -41,7 +41,6 @@ const ComponentDropdowns = ({
   const circuitData = useSelector(
     (state: RootState) => state?.circuit as CircuitData
   );
-console.log(circuitData);
 
   useEffect(() => {
     if (circuitData?.node) {

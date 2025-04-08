@@ -9,7 +9,7 @@ import { UserMenu } from "@/components/custom/user-menu";
 import { Zap } from "lucide-react";
 import Loader from "@/components/custom/Loader";
 function SavedProject() {
-  const id = useSelector((state: RootState) => state?.auth?.user?._id);
+  const id = useSelector((state: RootState) => state?.auth?.user?.id);
 
   const { data, isLoading } = useGetAllProjectsQuery(id!);
   const dispatch = useDispatch();

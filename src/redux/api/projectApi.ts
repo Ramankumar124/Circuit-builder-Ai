@@ -15,9 +15,9 @@ export const projectApi = userApi.injectEndpoints({
       }),
     }),
     getAllProjects:builder.query({
-      query:(id:string)=>({
+      query:()=>({
         url:"/project/get-All-project",
-        params:id,
+        
       }),
       
     })

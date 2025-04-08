@@ -17,17 +17,10 @@ export interface contact{
   firebaseToken:string,
 }
 export interface User {
-  _id: string;
-  name: string;
+  id: string;
+  fullName: string;
+  userName:string;
   email: string;
-  bio?: string;
-  contacts: contact[];
-  firebaseToken?: string;
-  isOnline: boolean;
-  friendRequest: {
-    sent: object;
-    received: object;
-  };
   isEmailVerified: boolean;
   avatar: {
     public_id: string;

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, Ref } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Check, Copy, Mail, QrCode, Download } from "lucide-react";
 import { IoLogoWhatsapp } from "react-icons/io5";
 import {
@@ -7,7 +7,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

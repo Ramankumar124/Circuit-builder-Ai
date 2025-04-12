@@ -37,11 +37,9 @@ const OtpVerifyEmail = ({ email, onPageChange }: OTPVerificationProps) => {
 
   const onSubmit = async (data: OtpInput) => {
     try {
-      const response = await Api.post("/auth/verifyEmail", data);
+      await Api.post("/auth/verifyEmail", data);
       toast.success("Email Verified Successfully")
-      if ((response.status = 201)) {
         onPageChange("login");
-      }
     } catch (error:any) {
       toast.error(error?.response?.data?.messag);
     }

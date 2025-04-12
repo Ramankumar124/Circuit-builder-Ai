@@ -9,7 +9,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { CircuitState } from "@/interfaces/circuit";
 import { useDispatch } from "react-redux";
-import { setCircuit, setProjectId } from "@/redux/features/circuitSlice";
+import {  setProjectId } from "@/redux/features/circuitSlice";
 interface ProjectDialogProps {
   open: boolean;
   onClose: () => void;

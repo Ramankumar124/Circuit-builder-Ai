@@ -31,7 +31,7 @@ export default function PromptPage() {
   const [prompt, setPrompt] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [createCircuit, { isLoading, isError }] = useCreateCircuitMutation();
+  const [createCircuit, { isLoading }] = useCreateCircuitMutation();
   const [enhancePrompt] = useEhancePromptMutation();
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function PromptPage() {
     }
     try {
       const response = await createCircuit(prompt).unwrap();
-      let rawData = response?.data;
+      const rawData = response?.data;
       if (typeof rawData !== "string") {
         console.error("API returned unexpected format:", rawData);
         toast.error("Invalid API response format");

@@ -34,7 +34,9 @@ const VerifyForgotPassword=({ email, onPageChange }: OTPVerificationProps) =>{
      if(response.status===201){
      onPageChange('reset-password');
      }
-    } catch (error) {
+    } catch (error:any) {
+      console.log(error.message);
+      
       toast.error("Unable to Reset Password")
     }
   }

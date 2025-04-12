@@ -1,48 +1,26 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import FlowChart from "../../flowchart";
-import { useCircuitContext } from "../../context/circuitContext";
 import ProjectDialog from "../../components/custom/DialogBox";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/Store";
 
-import useDownloadImage from "@/hooks/userDownloadImage";
-import { ReactFlowInstance } from "@xyflow/react";
-import { FolderOpen, History, Settings, Share, Zap } from "lucide-react";
-import {
-  Tooltip,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { TooltipContent } from "@radix-ui/react-tooltip";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { UserMenu } from "@/components/custom/user-menu";
 import { ShareDialog } from "@/components/custom/share-dialog";
 import { ComponentDetails } from "@/components/ui/components-details";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import ComponentDropdowns from "@/components/custom/ComponentsDropdown";
 import DasboardLoader from "@/components/custom/DasboardLoader";
-import { Card } from "@/components/ui/card";
+
 import RightBar from "@/components/Dashboard/RightBar";
 import LeftBar from "@/components/Dashboard/LeftBar";
 import Header from "@/components/Dashboard/Header";
 
-type NodeType = {
-  type: string;
-  data: {
-    label: string;
-  };
-};
 
 
 const Dashboard = () => {
   const [isDialogOpen, setisDialogOpen] = useState<boolean>(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(
+    null
+  );
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
 
   const handleDialog = () => {
     setisDialogOpen(false);
@@ -51,7 +29,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
-     <Header setIsShareOpen={setIsShareOpen}/>
+        <Header setIsShareOpen={setIsShareOpen} />
         <div className="flex flex-grow bg-black py-4">
           <div id="leftbar" className="h-full w-1/5 bg-white rounded-4xl">
             <LeftBar

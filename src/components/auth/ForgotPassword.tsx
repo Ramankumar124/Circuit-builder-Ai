@@ -31,6 +31,8 @@ export function ForgotPassword({ onPageChange }: ForgotPasswordProps) {
         }
 
     } catch (error:any) {
+      console.log(error.message);
+      
         toast.error("Unable to Send Reset Link");
     }
   };

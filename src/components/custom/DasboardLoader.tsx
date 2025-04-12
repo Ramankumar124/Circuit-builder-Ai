@@ -25,7 +25,7 @@ const DasboardLoader: React.FC<{
       clearTimeout(timer);
       clearInterval(interval);
     };
-  }, []);
+  }, [setIsLoading]);
   return (
     <div className="fixed inset-0 bg-white/80 dark:bg-slate-950/80 z-50 flex flex-col items-center justify-center">
       <div className="w-64 mb-4">

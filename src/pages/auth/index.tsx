@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { Login } from '../../components/auth/Login';
 import { Register1 } from '../../components/auth/Register1';
 import { ForgotPassword } from '../../components/auth/ForgotPassword';

@@ -17,7 +17,7 @@ interface LEDNodeProps {
   };
 }
 const LEDNode: React.FC<LEDNodeProps> = ({ data }) => {
-  let color: string = data.color || "red";
+const color: string = data.color || "red";
 
   // if(color=="undefined") color="red"
   return (

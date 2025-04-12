@@ -1,10 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Zap } from "lucide-react";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/Store";
 import { TextGenerateEffect } from "../ui/text-generate-effect";
@@ -42,7 +39,7 @@ const RightBar = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="text-sm space-y-3">
-            <TextGenerateEffect words={circuitData?.explanation!}/>
+            <TextGenerateEffect words={circuitData?.explanation as string}/>
             
         </CardContent>
       </Card>

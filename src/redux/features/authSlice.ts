@@ -43,9 +43,8 @@ const initialState: AuthSliceState = {
 export const fetchUserData = createAsyncThunk(
   'auth/fetchUserData',
   async () => {
-    const response = await axios.get(`${server}/v1/auth/getUserData`, { withCredentials: true });
-    console.log(response.data);
-    
+    const response = await axios.get(`${server}/api/v1/auth/getUserData`, { withCredentials: true });
+
     return response.data.data; // This will be the payload of the fulfilled action
   }
 );

@@ -20,6 +20,7 @@ import { formatDistanceToNow } from "date-fns";
 import { setCircuit } from "@/redux/features/circuitSlice";
 import { toast } from "react-hot-toast";
 import ComponentDropdowns from "../custom/ComponentsDropdown";
+import { Edge, Node } from "@/interfaces/circuit";
 
 interface LeftBarProps {
   setSelectedComponent: React.Dispatch<React.SetStateAction<any>>;
@@ -36,8 +37,8 @@ interface Project {
   circuit: {
     id: string;
     circuitName: string;
-    node: any[];
-    edge: any[];
+    node: Node;
+    edge: Edge;
     explaination: string;
   };
   prompt: string;
@@ -68,7 +69,7 @@ const LeftBar: React.FC<LeftBarProps> = ({
   const formatTimeAgo = (dateString: string) => {
     try {
       return formatDistanceToNow(new Date(dateString), { addSuffix: true });
-    } catch (error) {
+    } catch (error:any) {
       return "Unknown date";
     }
   };
@@ -247,7 +248,8 @@ const LeftBar: React.FC<LeftBarProps> = ({
                     className="p-2 hover:bg-slate-50 transition-colors w-[300px] cursor-pointer"
                     onClick={() => handleOpenProject(project)}
                   >
-                    <div className="flex flex-col">
+                    <div className="flex justify-between items-center">
+                    <div className="flex flex-col ml-4">
                       <h4
                         className="text-sm font-medium line-clamp-1"
                       >
@@ -256,6 +258,8 @@ const LeftBar: React.FC<LeftBarProps> = ({
                       <p className="text-xs text-slate-500">
                         {formatTimeAgo(project.createdAt)}
                       </p>
+                    </div>
+                    <FolderOpen className="text-gray-500"/>
                     </div>
                   </Card>
                 ))}

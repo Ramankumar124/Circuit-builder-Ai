@@ -23,9 +23,10 @@ const FlowChart: React.FC = () => {
  const  {flowRef}=useCircuitContext()
   const node = useSelector((state:RootState) => state?.circuit?.node);
   const edge = useSelector((state:RootState) => state?.circuit?.edge);
-
-  const [nodes,, onNodesChange] = useNodesState(node);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(edge);
+//@ts-ignore
+  const [nodes, , onNodesChange] = useNodesState(node );
+  //@ts-ignore
+  const [edges, setEdges, onEdgesChange] = useEdgesState(edge );
 
   const onConnect = useCallback(
     (params: any) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),

@@ -2,7 +2,7 @@
 import { useReactFlow } from '@xyflow/react';
 
 const CustomControls = () => {
-  const { zoomIn, zoomOut, fitView ,getZoom} = useReactFlow();
+  const { zoomIn, zoomOut, fitView } = useReactFlow();
 
   return (
     <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 10 }}>

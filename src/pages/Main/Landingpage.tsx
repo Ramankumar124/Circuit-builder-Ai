@@ -115,11 +115,11 @@ const LandingPage = () => {
           </div>
         </section>
 
-        <div className="flex flex-col overflow-hidden bg-neutral-900">
+        <div className="flex flex-col overflow-hidden bg-neutral-900 ">
           <ContainerScroll
             titleComponent={
               <>
-                <h1 className="text-4xl font-semibold  text-black dark:text-white mb-4 ">
+                <h1 className="text-4xl font-semibold  text-white dark:text-white mb-10 ">
                   Unleash the power of <br />
                   <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none ">
                     Intuitive{"  "}

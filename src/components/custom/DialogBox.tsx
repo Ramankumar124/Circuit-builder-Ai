@@ -32,7 +32,6 @@ const ProjectDialog: React.FC<ProjectDialogProps> = ({ open, onClose }) => {
         prompt,
       };
    const response =  await saveProject(payload);
-console.log(response.data.data);
  dispatch(setProjectId({
   projectId:response?.data?.data.id as string
  }))

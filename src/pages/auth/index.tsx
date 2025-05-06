@@ -34,14 +34,14 @@ const AuthLayout = () => {
         {/* Right Section - Image/Preview */}
         <div className="hidden md:block w-1/2 relative">
           <img
-            src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1000"
+            src="https://img.freepik.com/free-vector/neon-circuit-board-background_52683-28772.jpg?ga=GA1.1.144307226.1746463134&semt=ais_hybrid&w=740"
             alt="Auth Banner"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-purple-900/30 backdrop-blur-sm flex items-center justify-center">
+          <div className="absolute inset-0 bg-purple-900/30  flex items-center justify-center">
             <div className="text-center p-8">
               <h2 className="text-4xl font-bold text-white mb-4">Welcome Back To WaveChat!</h2>
-              <p className="text-gray-200">Connect, Type, Send.</p>
+  
             </div>
           </div>
         </div>

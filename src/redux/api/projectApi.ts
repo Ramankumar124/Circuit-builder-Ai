@@ -19,9 +19,14 @@ export const projectApi = userApi.injectEndpoints({
         url:"/project/get-All-project",
         
       }),
-      
-    })
+    }),
+      deleteProject:builder.mutation({
+        query:(id:string)=>({
+          url:`/project/delete-project/${id}`,
+          method:"Delete"
+        })
+      })
   }),
 });
 
-export const { useSavedProjectMutation ,useGetAllProjectsQuery} = projectApi;
+export const { useSavedProjectMutation ,useGetAllProjectsQuery,useDeleteProjectMutation} = projectApi;

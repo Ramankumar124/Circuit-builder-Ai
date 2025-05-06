@@ -44,39 +44,6 @@ const RightBar = () => {
         </CardContent>
       </Card>
 
-      <div className="mt-3">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg">
-              Related Circuits
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-2">
-            <Button
-              variant="outline"
-              className="h-auto py-2 justify-start text-left"
-            >
-              <div className="flex flex-col items-start">
-                <span className="text-xs">LED Chaser</span>
-                <span className="text-[10px] text-slate-500">
-                  Sequential LEDs
-                </span>
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              className="h-auto py-2 justify-start text-left"
-            >
-              <div className="flex flex-col items-start">
-                <span className="text-xs">LED Dimmer</span>
-                <span className="text-[10px] text-slate-500">
-                  Variable brightness
-                </span>
-              </div>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
     </TabsContent>
 
     <TabsContent

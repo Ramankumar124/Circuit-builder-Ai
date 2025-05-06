@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { properties } from "./properties/properties";
+import { useNavigate } from "react-router-dom";
 
 const Api = axios.create({
   baseURL: `${properties?.PUBLIC_BASE_URL}/api/v1`,
@@ -16,14 +17,17 @@ Api.interceptors.response.use(
       _retry?: boolean;
     };
     if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true; // Mark the request as retried
-
+      originalRequest._retry = true; 
       try {
-        await axios.post("/auth/refresh-token", {}, { withCredentials: true });
-
+        await axios.post(
+          `${properties.PUBLIC_BASE_URL}/api/v1/auth/refresh-token`,
+          {},
+          { withCredentials: true }
+        );
         return Api(originalRequest);
       } catch (refreshError) {
-        window.location.href = "/";
+        const navigate = useNavigate();
+        navigate("/login");
         return Promise.reject(refreshError);
       }
     }

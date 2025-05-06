@@ -1,21 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import axios from "axios";
-import { server } from "../../constants/config";
+import Api from "@/api";
 
-export interface contact{
-  _id:string,
-  name: string;
-  email: string;
-  bio?: string;
-  isOnline: boolean;
-  avatar: {
-    public_id: string;
-    url: string;
-    _id: string;
-  };
-  firebaseToken:string,
-}
+
 export interface User {
   id: string;
   fullName: string;
@@ -41,11 +28,12 @@ const initialState: AuthSliceState = {
 };
 
 export const fetchUserData = createAsyncThunk(
-  'auth/fetchUserData',
+  "auth/fetchUserData",
   async () => {
-    const response = await axios.get(`${server}/api/v1/auth/getUserData`, { withCredentials: true });
-
-    return response.data.data; // This will be the payload of the fulfilled action
+    const response = await Api.get(`/auth/getUserData`, {
+      withCredentials: true,
+    });
+    return response.data.data;
   }
 );
 

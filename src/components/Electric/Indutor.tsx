@@ -3,6 +3,7 @@ import { Handle, Position } from "@xyflow/react";
 import React from "react";
 interface componentProps {
   data: {
+    label: String;
     first: {
       type: "source" | "target";
       pintype: "positive" | "negative";
@@ -28,6 +29,17 @@ const Inductor: React.FC<componentProps> = ({ data }) => {
           .In2 { fill: #F19227; stroke: #000; stroke-miterlimit: 10; }
           .In3 { fill: #A7A9AC; stroke: #000; stroke-miterlimit: 10; }`}
         </style>
+        {/* Label text inside the SVG */}
+        <text
+          x="792"
+          y="500"
+          textAnchor="middle"
+          fill="black"
+          fontWeight="bold"
+          fontSize="80"
+        >
+          {data.label.toString()}
+        </text>
         <rect
           x="362.62"
           y="606.18"

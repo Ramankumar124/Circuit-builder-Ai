@@ -14,6 +14,7 @@ import { useLogoutUserMutation } from "@/redux/api/userApi"
 import toast from "react-hot-toast"
 import { useSelector } from "react-redux"
 import { RootState } from "@/redux/Store"
+import { FaWandMagicSparkles } from "react-icons/fa6"
 
 export function UserMenu() {
   const [logout]=useLogoutUserMutation();
@@ -51,18 +52,19 @@ export function UserMenu() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-        <DropdownMenuItem onClick={() => window.location.href = "/home"}>
+        <DropdownMenuItem onClick={() => window.location.href = "/"}>
             <Home className="mr-2 h-4 w-4" />
             <span>Home</span>
           </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => window.location.href = "/home"}>
+            <FaWandMagicSparkles className="mr-2 h-4 w-4" />
+            <span>Design</span>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => window.location.href = "/myprojects"}>
             <FolderOpen className="mr-2 h-4 w-4" />
             <span>My Projects</span>
             </DropdownMenuItem>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
+
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="text-red-600" onClick={logoutHandle}>

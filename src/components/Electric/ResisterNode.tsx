@@ -16,7 +16,7 @@ interface resistorProps {
     };
   };
 }
- function getResistorColors(ohms: number) {
+function getResistorColors(ohms: number) {
   // Color array (index = color code value)
   const colors = [
     "black",
@@ -68,8 +68,15 @@ const Resistor: React.FC<resistorProps> = ({ data }) => {
             .rs5 { fill:${band2} ; stroke: #000000; stroke-miterlimit: 10; }
             .rs6 { fill: none; stroke: #000000;strokeWidth: 2; stroke-miterlimit: 10; }
             .rs7 { fill: ${band4}; stroke: #000000; stroke-miterlimit: 10; }
+            .value-label { fill: black; font-size: 60px; font-weight: bold; text-anchor: middle; }
           `}
         </style>
+
+        {/* Value label text inside the SVG */}
+        <text x="396" y="300" className="value-label">
+          {data?.valueLabel}Ω
+        </text>
+
         <path
           className="rs0"
           d="M352.6,338.72v113.94h-39.71c-9.12,6.03-19.75,10.1-31.26,11.61c-2.25,0.29-4.52,0.49-6.83,0.58

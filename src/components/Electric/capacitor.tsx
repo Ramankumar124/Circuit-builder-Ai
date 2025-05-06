@@ -3,6 +3,7 @@ import { Handle, Position } from "@xyflow/react";
 
 interface componentProps {
   data: {
+    value: string;
     first: {
       type: "source" | "target";
       pintype: "positive" | "negative";
@@ -14,6 +15,7 @@ interface componentProps {
   };
 }
 const Capacitor: React.FC<componentProps> = ({ data }) => {
+
   return (
     <>
       <svg width="100" height="100" viewBox="0 0 792 792">
@@ -22,7 +24,7 @@ const Capacitor: React.FC<componentProps> = ({ data }) => {
           .cp0 { fill: #C69C8A; stroke: #000; stroke-miterlimit: 10; }
           .cp1 { fill: none; stroke: #000; stroke-miterlimit: 10; }
           .cp2 { font-family: 'MyriadPro-Regular'; }
-          .cp3 { font-size: 19.8916px; }
+          .cp3 { font-size: 36px; font-weight: bold; }
         `}
         </style>
         <path
@@ -39,7 +41,7 @@ const Capacitor: React.FC<componentProps> = ({ data }) => {
           transform="matrix(2.832769e-16 1.57 -1 4.447324e-16 419.3945 202.1211)"
           className="cp3"
         >
-          this is a capacitor
+          {data?.value}
         </text>
       </svg>
       <Handle

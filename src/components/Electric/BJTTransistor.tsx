@@ -3,6 +3,7 @@ import { Handle, Position, HandleType } from "@xyflow/react";
 
 interface TransistorNodeProps {
   data: {
+    label: string;
     first: {
       type: "source" | "target";
       pintype: "collector" | "base" | "emitter";
@@ -33,6 +34,18 @@ const TransistorNode: React.FC<TransistorNodeProps> = ({ data }) => {
         viewBox="0 0 640 1280"
         preserveAspectRatio="xMidYMid meet"
       >
+        {/* Label text above the transistor */}
+        <text
+          x="270"
+          y="200"
+          textAnchor="middle"
+          fill="black"
+          fontSize="150"
+          fontWeight="bold"
+        >
+          {data.label}
+        </text>
+
         <g
           transform="translate(0,1280) scale(0.08,-0.08)"
           fill=""

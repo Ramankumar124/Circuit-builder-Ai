@@ -4,7 +4,7 @@ import React from "react";
 
 interface BatteryProps {
   data: {
-    label:string,
+    label: string;
     first: {
       type: "source" | "target";
       pintype: "positive" | "negative";
@@ -17,6 +17,9 @@ interface BatteryProps {
 }
 
 const Batery: React.FC<BatteryProps> = ({ data }) => {
+  const value = data.label.includes("(") 
+    ? data.label.split("(")[1].replace(")", "") 
+    : data.label;
   return (
     <div style={{ position: "relative", width: 80, height: 80 }}>
       <svg width="200" height="200" viewBox="0 0 3168 3168">
@@ -26,7 +29,7 @@ const Batery: React.FC<BatteryProps> = ({ data }) => {
       .b2 { fill: #eec22d; opacity: 0.71; stroke: #000; stroke-miterlimit: 10; }
       .b3 { fill: #000; stroke: #000; stroke-miterlimit: 10; }
       .b4 { stroke: #000;strokeWidth: 8; stroke-miterlimit: 10; }
-      .b5 { font-family: MyriadPro-Regular; font-size: 132.76px; opacity: 0.79 ;stroke: #ffffff }
+      .b5 { font-family: MyriadPro-Regular; font-size: 132.76px; opacity: 1.0 ;stroke: #ffffff }
     `}
         </style>
         <path
@@ -66,12 +69,12 @@ const Batery: React.FC<BatteryProps> = ({ data }) => {
           x2="1918.84"
           y2="1061.84"
         />
-        <text className="b5" x="1464.76" y="1599.8">
-          <tspan x="0" y="0">
-            12 V
+        <text className="b5" x="1464.76" y="1599.8" fill="#ffffff" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>
+          <tspan x="1464.76" y="1599.8">
+            {value}
           </tspan>
         </text>
-      </svg>
+            </svg>
 
       {/* Positive Terminal Handle */}
       <Handle

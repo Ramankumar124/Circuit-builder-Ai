@@ -20,12 +20,10 @@ interface TransistorNodeProps {
 }
 
 const TransistorNode: React.FC<TransistorNodeProps> = ({ data }) => {
-  console.log(data);
 
   return (
     <div className="relative ">
-      {/* Transistor SVG */}
-      {/* <div className="text-3xl text-bold">{data.first +data.second +data.third}</div> */}
+
       <svg
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +32,6 @@ const TransistorNode: React.FC<TransistorNodeProps> = ({ data }) => {
         viewBox="0 0 640 1280"
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Label text above the transistor */}
         <text
           x="270"
           y="200"
@@ -65,7 +62,6 @@ const TransistorNode: React.FC<TransistorNodeProps> = ({ data }) => {
         </g>
       </svg>
 
-      {/* Handles for Collector, Base, and Emitter */}
       <Handle
         type={data.first.type as HandleType}
         position={Position.Left}

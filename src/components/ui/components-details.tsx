@@ -1,96 +1,71 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
- 
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { useGetCompDetailMutation } from "@/redux/api/circuitApi";
 
 interface ComponentDetailsProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  componentId: string | null
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  componentId: string | null;
 }
 
-// Mock component data
-const componentData = {
-  "battery-9v": {
-    name: "9V Battery",
-    description: "A standard 9V battery commonly used in electronic circuits.",
-    specs: [
-      { name: "Voltage", value: "9V" },
-      { name: "Chemistry", value: "Alkaline" },
-      { name: "Capacity", value: "~500mAh" },
-      { name: "Max Current", value: "~200mA" },
-    ],
-    usage: "Commonly used in small electronic devices and circuits that require a moderate voltage source.",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  "led-red": {
-    name: "Red LED",
-    description: "A standard red light-emitting diode.",
-    specs: [
-      { name: "Forward Voltage", value: "1.8-2.2V" },
-      { name: "Max Current", value: "20mA" },
-      { name: "Wavelength", value: "620-625nm" },
-      { name: "Luminous Intensity", value: "~5000mcd" },
-    ],
-    usage: "Used as indicators, in displays, and for general illumination in electronic circuits.",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  "Resistor (220Ω)": {
-    name: "220 Ohm Resistor",
-    description: "A standard 220Ω resistor used for current limiting.",
-    specs: [
-      { name: "Resistance", value: "220Ω" },
-      { name: "Tolerance", value: "±5%" },
-      { name: "Power Rating", value: "0.25W" },
-      { name: "Temperature Coefficient", value: "±100ppm/°C" },
-    ],
-    usage: "Commonly used for current limiting in LED circuits and as pull-up/pull-down resistors.",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-}
-
-export function ComponentDetails({ open, onOpenChange, componentId }: ComponentDetailsProps) {
-  const [loading, setLoading] = useState(true)
-  const [progress, setProgress] = useState(0)
-  const [component, setComponent] = useState<any>(null)
+export function ComponentDetails({
+  open,
+  onOpenChange,
+  componentId,
+}: ComponentDetailsProps) {
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [component, setComponent] = useState<any>(null);
+  const [getDetails] = useGetCompDetailMutation();
 
   useEffect(() => {
     if (open && componentId) {
-      setLoading(true)
-      setProgress(0)
-      // Simulate loading data
+      setLoading(true);
+      setProgress(0);
+
+      // Simulate loading progress
       const interval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
-            clearInterval(interval)
-            setLoading(false)
-            return 100
+            clearInterval(interval);
+            return 100;
           }
-          return prev + 10
-        })
-      }, 100)
+          return prev + 10;
+        });
+      }, 300);
 
-      // Get component data
-      const data = componentData[componentId as keyof typeof componentData]
-      console.log(data);
-      
-      if (data) {
-        setComponent(data)
+      // Fetch component details
+      async function getSpecifications() {
+        try {
+          const response = await getDetails(componentId!);
+          const cleanedResponse = response?.data?.data
+            .replace(/```json|```/g, "")
+            .trim();
+          const data = JSON.parse(cleanedResponse);
+          setComponent(data);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching component details:", error);
+          setLoading(false);
+        }
       }
 
-      return () => clearInterval(interval)
-    }
-  }, [open, componentId])
+      getSpecifications();
 
-  if (!component) return null
+      return () => clearInterval(interval);
+    }
+  }, [open, componentId, getDetails]);
+
+  if (!open) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -98,96 +73,133 @@ export function ComponentDetails({ open, onOpenChange, componentId }: ComponentD
         {loading ? (
           <div className="py-8 flex flex-col items-center justify-center">
             <Progress value={progress} className="w-64 mb-4" />
-            <p className="text-sm text-slate-500">Loading component details...</p>
+            <p className="text-sm text-slate-500">
+              Loading component details...
+            </p>
           </div>
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle className="text-xl">{component.name}</DialogTitle>
-              <DialogDescription>{component.description}</DialogDescription>
+              <DialogTitle className="text-xl">
+                {component?.name || "Component Details"}
+              </DialogTitle>
+              <DialogDescription>
+                {component?.description || ""}
+              </DialogDescription>
             </DialogHeader>
 
-            <Tabs defaultValue="specs" className="mt-4">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="specs">Specifications</TabsTrigger>
-                <TabsTrigger value="usage">Usage</TabsTrigger>
-                <TabsTrigger value="examples">Examples</TabsTrigger>
-              </TabsList>
+            {component && (
+              <Tabs defaultValue="specs" className="mt-4">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="specs">Specifications</TabsTrigger>
+                  <TabsTrigger value="usage">Usage</TabsTrigger>
+                  <TabsTrigger value="notes">Notes</TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="specs" className="mt-4">
-                <div className="flex gap-4">
-                  <div className="w-1/3">
-                    <div className="bg-slate-100 rounded-lg p-2 flex items-center justify-center">
-                      <img
-                        src={component.image || "/placeholder.svg"}
-                        alt={component.name}
-                        className="max-w-full h-auto"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-2/3">
-                    <h3 className="text-sm font-medium mb-2">Technical Specifications</h3>
-                    <div className="space-y-2">
-                      {component.specs.map((spec: any, index: number) => (
-                        <div key={index} className="flex justify-between">
-                          <span className="text-sm text-slate-600">{spec.name}:</span>
-                          <span className="text-sm font-medium">{spec.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="usage" className="mt-4">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-sm font-medium mb-2">Common Usage</h3>
-                    <p className="text-sm text-slate-600">{component.usage}</p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-sm font-medium mb-2">Best Practices</h3>
-                    <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1">
-                      <li>Always check the polarity when connecting to a circuit</li>
-                      <li>Use appropriate current limiting components</li>
-                      <li>Avoid exceeding maximum ratings</li>
-                      <li>Store in a cool, dry place when not in use</li>
-                    </ul>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="examples" className="mt-4">
-                <div className="space-y-4">
-                  <h3 className="text-sm font-medium mb-2">Example Circuits</h3>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="border border-slate-200 rounded-lg p-2">
-                      <div className="bg-slate-100 rounded h-24 mb-2 flex items-center justify-center text-xs text-slate-500">
-                        Circuit Preview
+                {/* Specifications Tab */}
+                <TabsContent value="specs" className="space-y-4 mt-4">
+                  <div className="bg-slate-50 rounded-lg p-4 space-y-3">
+                    {component["Component Type"] && (
+                      <div className="flex items-start">
+                        <span className="font-medium text-slate-700 min-w-[140px]">
+                          Component Type:
+                        </span>
+                        <span className="text-slate-600">
+                          {component["Component Type"]}
+                        </span>
                       </div>
-                      <h4 className="text-sm font-medium">Basic LED Circuit</h4>
-                      <p className="text-xs text-slate-500">Simple LED with current limiting resistor</p>
-                    </div>
+                    )}
 
-                    <div className="border border-slate-200 rounded-lg p-2">
-                      <div className="bg-slate-100 rounded h-24 mb-2 flex items-center justify-center text-xs text-slate-500">
-                        Circuit Preview
+                    {component["Given Value"] && (
+                      <div className="flex items-start">
+                        <span className="font-medium text-slate-700 min-w-[140px]">
+                          Given Value:
+                        </span>
+                        <span className="text-slate-600">
+                          {component["Given Value"]}
+                        </span>
                       </div>
-                      <h4 className="text-sm font-medium">LED Array</h4>
-                      <p className="text-xs text-slate-500">Multiple LEDs in parallel configuration</p>
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
+                    )}
 
-      
+                    {component["Operating Voltage"] && (
+                      <div className="flex items-start">
+                        <span className="font-medium text-slate-700 min-w-[140px]">
+                          Operating Voltage:
+                        </span>
+                        <span className="text-slate-600">
+                          {component["Operating Voltage"]}
+                        </span>
+                      </div>
+                    )}
+
+                    {component["Operating Current"] && (
+                      <div className="flex items-start">
+                        <span className="font-medium text-slate-700 min-w-[140px]">
+                          Operating Current:
+                        </span>
+                        <span className="text-slate-600">
+                          {component["Operating Current"]}
+                        </span>
+                      </div>
+                    )}
+
+                    {component["Polarity"] && (
+                      <div className="flex items-start">
+                        <span className="font-medium text-slate-700 min-w-[140px]">
+                          Polarity:
+                        </span>
+                        <span className="text-slate-600">
+                          {component["Polarity"]}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
+
+                {/* Usage Tab */}
+                <TabsContent value="usage" className="space-y-4 mt-4">
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    {component["Common Uses"] ? (
+                      <div className="flex items-start">
+                        <span className="font-medium text-slate-700 min-w-[140px]">
+                          Common Uses:
+                        </span>
+                        <span className="text-slate-600">
+                          {component["Common Uses"]}
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="text-slate-500 italic">
+                        No usage information available
+                      </p>
+                    )}
+                  </div>
+                </TabsContent>
+
+                {/* Notes Tab */}
+                <TabsContent value="notes" className="space-y-4 mt-4">
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    {component["Special Notes"] ? (
+                      <div className="flex items-start">
+                        <span className="font-medium text-slate-700 min-w-[140px]">
+                          Special Notes:
+                        </span>
+                        <span className="text-slate-600">
+                          {component["Special Notes"]}
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="text-slate-500 italic">
+                        No special notes available
+                      </p>
+                    )}
+                  </div>
+                </TabsContent>
+              </Tabs>
+            )}
           </>
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-

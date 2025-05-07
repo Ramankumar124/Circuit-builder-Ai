@@ -105,6 +105,8 @@ export default function PromptPage() {
       const cleanedResponse = rawData.replace(/```json|```/g, "").trim();
       // **Parse the cleaned JSON string**
       const parsedData = JSON.parse(cleanedResponse);
+     
+      
       if (parsedData) {
         dispatch(
           setCircuit({

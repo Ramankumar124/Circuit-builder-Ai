@@ -3,7 +3,7 @@ import { Handle, Position } from "@xyflow/react";
 
 interface componentProps {
   data: {
-    value: string;
+    label: string;
     first: {
       type: "source" | "target";
       pintype: "positive" | "negative";
@@ -15,6 +15,9 @@ interface componentProps {
   };
 }
 const Capacitor: React.FC<componentProps> = ({ data }) => {
+  const value = data.label.includes("(") 
+    ? data.label.split("(")[1].replace(")", "") 
+    : data.label;
 
   return (
     <>
@@ -41,7 +44,7 @@ const Capacitor: React.FC<componentProps> = ({ data }) => {
           transform="matrix(2.832769e-16 1.57 -1 4.447324e-16 419.3945 202.1211)"
           className="cp3"
         >
-          {data?.value}
+          {value}
         </text>
       </svg>
       <Handle

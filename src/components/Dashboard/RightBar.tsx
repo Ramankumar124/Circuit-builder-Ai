@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Zap } from "lucide-react";
-import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/Store";
 import { TextGenerateEffect } from "../ui/text-generate-effect";

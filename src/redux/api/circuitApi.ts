@@ -16,7 +16,18 @@ export const CircuitApi = userApi.injectEndpoints({
         data: { prompt },
       }),
     }),
+    getCompDetail: builder.mutation({
+      query: (componentId: string) => ({
+        url: "/circuit/componentDetail",
+        method: "POST",
+        data: {componentId},
+      }),
+    }),
   }),
 });
 
-export const { useCreateCircuitMutation, useEhancePromptMutation } = CircuitApi;
+export const {
+  useCreateCircuitMutation,
+  useEhancePromptMutation,
+  useGetCompDetailMutation,
+} = CircuitApi;

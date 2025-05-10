@@ -32,7 +32,8 @@ export const fetchUserData = createAsyncThunk(
   async () => {
     const response = await Api.get(`/auth/getUserData`, {
       withCredentials: true,
-    });
+      timeout:3000,
+    },);
     return response.data.data;
   }
 );

@@ -13,23 +13,17 @@ import { fetchUserData } from "./redux/features/authSlice";
 import { useEffect } from "react";
 import NotFound from "./pages/NotFound";
 import AuthLayout from "./pages/auth";
-import { Spinner } from "./Spinner";
 import SharedProjectLoader from "./pages/ShareProject/ShareProjectLoader";
 
 function App() {
-  const { user, loader } = useSelector((state: RootState) => state?.auth);
+  const { user } = useSelector((state: RootState) => state?.auth);
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(fetchUserData());
   }, [dispatch]);
-  if (loader)
-    return (
-      <div>
-        <Spinner />
-      </div>
-    );
+
   return (
     <>
       <BrowserRouter>

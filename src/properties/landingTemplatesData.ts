@@ -6,7 +6,7 @@ const templateData = [
     components: ["LED", "Battery", "Transistor(BC547)", "Resistor(1k)"],
     type: "Complex",
     circuitImage: "/buzzerLedFlasher.png",
-    url:"http://localhost:5173/shared/18464396-052d-420f-879b-5511f91e1611"
+    url:"https://cbai.ramankumar.me/shared/18464396-052d-420f-879b-5511f91e1611"
   },
   {
     title: "Touch-activated led circuit",
@@ -15,7 +15,7 @@ const templateData = [
     components: ["LED", "Battery", "Transistor (2N3904),Resistor (1M)"],
     type: "Iot",
     circuitImage: "/touchActivated.png",
-    url:"http://localhost:5173/shared/683c2572-d105-4924-9535-e4b7d29f6395"
+    url:"https://cbai.ramankumar.me/shared/683c2572-d105-4924-9535-e4b7d29f6395"
   },
   {
     title: "Simple Buzzer Circuit",
@@ -24,7 +24,7 @@ const templateData = [
     components: ["Resistor (220)", "Buzzer", "Battery 9v"],
     type: "Basic",
     circuitImage: "/simpleBuzzer.png",
-    url:"http://localhost:5173/shared/f7205735-56c5-4133-8dc1-60d443bbac48"
+    url:"https://cbai.ramankumar.me/shared/f7205735-56c5-4133-8dc1-60d443bbac48"
   },
 ];
 export default templateData;

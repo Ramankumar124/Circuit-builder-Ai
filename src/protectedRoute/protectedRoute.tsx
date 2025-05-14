@@ -1,4 +1,6 @@
 import { RootState } from "@/redux/Store";
+import { Spinner } from "@/Spinner";
+import { Loader } from "lucide-react";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
@@ -14,12 +16,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   user,
   redirect = "/login",
 }) => {
+  const { loader } = useSelector((state: RootState) => state?.auth);
+  if (loader) {
+    return (
+      <div className="w-screen h-screen">
+        <Spinner />
+      </div>
+    ); // Show a loading state while checking user auth
+  }
 
-    const {loader} = useSelector((state: RootState) => state?.auth);
-    if (loader) {
-      return <div>Loading...</div>; // Show a loading state while checking user auth
-    }
-  
   if (!user) {
     return <Navigate to={redirect} replace />;
   }

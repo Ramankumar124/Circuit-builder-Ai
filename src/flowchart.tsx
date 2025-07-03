@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect } from "react";
+import React, {useCallback } from "react";
 import {
   ReactFlow,
   useNodesState,
@@ -24,12 +24,6 @@ const FlowChart: React.FC = () => {
   const node = useSelector((state:RootState) => state?.circuit?.node);
   const edge = useSelector((state:RootState) => state?.circuit?.edge);
 
-  const allData = useSelector((state:RootState) => state?.circuit);
-  
-  useEffect(() => {
-console.log("All data",JSON.stringify(allData));
-
-  }, [allData])
   
 
 //@ts-ignore

@@ -5,26 +5,32 @@ const templateData = [
       "This circuit uses a resistor (R1) and a capacitor (C1) to make a blinking signal. This signal turns the LED and buzzer on and off one after the other. A transistor works like a switch to control them. Resistors R2 and R3 protect the LED and buzzer from too much current. You can change how fast it blinks by changing R1 or C1",
     components: ["LED", "Battery", "Transistor(BC547)", "Resistor(1k)"],
     type: "Complex",
-    circuitImage: "/buzzerLedFlasher.png",
-    url:"https://cbai.ramankumar.me/shared/18464396-052d-420f-879b-5511f91e1611"
+    circuitImage: "/buzzerAndLedFlasher.png",
+    url: "https://cbai.ramankumar.me/shared/234f07df-512f-43d6-896b-b2a95a44e4e1",
   },
   {
-    title: "Touch-activated led circuit",
+    title: "Simple Led Blinking Circuit",
     description:
-    "This circuit uses a touch sensor (like a switch) to control an LED using a transistor. When you touch the sensor, it sends a small current to the transistor's base, allowing a larger current to flow and turn on the LED. A 1MΩ resistor limits the base current, and a 220Ω resistor protects the LED. If the sensor isn't touched, the LED stays off..",
-    components: ["LED", "Battery", "Transistor (2N3904),Resistor (1M)"],
-    type: "Iot",
-    circuitImage: "/touchActivated.png",
-    url:"https://cbai.ramankumar.me/shared/683c2572-d105-4924-9535-e4b7d29f6395"
-  },
-  {
-    title: "Simple Buzzer Circuit",
-    description:
-      "This circuit uses a 9V battery to power a buzzer through a 220Ω resistor. The resistor limits the current flowing to the buzzer, preventing damage. The buzzer will continuously beep as long as the circuit is closed",
-    components: ["Resistor (220)", "Buzzer", "Battery 9v"],
+      "This circuit uses a 1Hz square wave to drive the base of a 2N2222 transistor, turning the LED on and off every second. The resistor limits the current through the LED, and the capacitor smooths out the signal to the transistor. The 2N2222 is used as a switch to control the LED operation.",
+    components: [
+      "Resistor",
+      "LED",
+      "Battery",
+      "Transistor (2N2222)",
+      "Capacitor",
+    ],
     type: "Basic",
-    circuitImage: "/simpleBuzzer.png",
-    url:"https://cbai.ramankumar.me/shared/f7205735-56c5-4133-8dc1-60d443bbac48"
+    circuitImage: "/Led blinkiing circuit.png",
+    url: "https://cbai.ramankumar.me/shared/234f07df-512f-43d6-896b-b2a95a44e4e1",
+  },
+  {
+    title: "10 LEDs in Series Circuit",
+    description:
+      "This circuit connects 10 LEDs in series with a 220Ω resistor and a 9V battery. The resistor limits the current to prevent damage to the LEDs. The LEDs will light up if the voltage drop across each is below its maximum forward voltage. You can adjust the resistor value to change brightness.",
+    components: ["LED (10x)", "Battery (9V)", "Resistor (220Ω)"],
+    type: "Basic",
+    circuitImage: "/led chain.png",
+    url: "https://cbai.ramankumar.me/shared/234f07df-512f-43d6-896b-b2a95a44e4e1",
   },
 ];
 export default templateData;
